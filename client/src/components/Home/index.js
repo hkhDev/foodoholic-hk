@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
-
+import { Spinner } from "react-bootstrap";
 import Post from "../Post";
 import axios from "axios";
 
+export const loadingEffect = () => {
+  return (
+    <div className="loading-effect">
+      <Spinner animation="grow" /> <Spinner animation="grow" />{" "}
+      <Spinner animation="grow" />
+    </div>
+  );
+};
+
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -12,7 +22,7 @@ const Home = () => {
 
   const getAllPost = () => {
     axios
-      .get("http://localhost:5000/allpost", {
+      .get("/allpost", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
@@ -22,6 +32,7 @@ const Home = () => {
         // console.log("Get post");
         // console.log(res.data.posts);
         setPosts(res.data.posts);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -36,7 +47,7 @@ const Home = () => {
       ));
     }
   };
-  return <div>{renderPost()}</div>;
+  return <div>{isLoading ? loadingEffect() : renderPost()}</div>;
 };
 
 export default Home;

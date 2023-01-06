@@ -4,9 +4,11 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Post from "../Post";
+import { loadingEffect } from "../Home";
 
 const UserProfile = () => {
   const [userPosts, setUserPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   // const { state, dispatch } = useContext(UserContext);
   const { userId } = useParams();
   // console.log(userId);
@@ -17,7 +19,7 @@ const UserProfile = () => {
   const getUserPost = () => {
     console.log("called api");
     axios
-      .get(`http://localhost:5000/user/${userId}`, {
+      .get(`/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
@@ -27,6 +29,7 @@ const UserProfile = () => {
         console.log("Get post");
         console.log(res.data);
         setUserPosts(res.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -46,9 +49,15 @@ const UserProfile = () => {
   return (
     <div>
       <h1>{userPosts.user && userPosts.user.name}</h1>
-      {renderPost()}
+      {isLoading ? loadingEffect() : renderPost()}
     </div>
   );
+  // (
+  //
+  //     <h1>{userPosts.user && userPosts.user.name}</h1>
+  //     {renderPost()}
+  //
+  // );
 };
 
 export default UserProfile;

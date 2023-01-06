@@ -15,7 +15,7 @@ const CreatePost = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(`Bearer ${localStorage.getItem("jwt")}`);
-    console.log(resImg, resName, resLocation, resDetails);
+    // console.log(resImg, resName, resLocation, resDetails);
     const formData = new FormData();
     formData.append("file", resImg);
     formData.append("upload_preset", "food-review");
@@ -27,7 +27,7 @@ const CreatePost = () => {
       )
       .then((res) => {
         console.log("upload image");
-        console.log(res.data);
+        // console.log(res.data);
         // navigate("/Profile");
         setResImgURl(res.data.secure_url);
         // setTimeout(() => {

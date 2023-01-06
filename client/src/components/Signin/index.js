@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../App";
@@ -27,26 +27,8 @@ const Signin = () => {
       setMessage({ title: "Warning!", body: "Invalid email" });
       setShow(true);
     } else {
-      // const newUserData = {
-      //   name,
-      //   email,
-      //   password,
-      // };
-
-      // await fetch("http://localhost:5000/signup", {
-      //   method: "post",
-      //   header: {
-      //     "Content-type": "application/json",
-      //   },
-      //   body: JSON.stringify(newUserData),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log(data);
-      //   })
-      //   .catch((err) => ({ err }));
       await axios
-        .post("http://localhost:5000/signin", {
+        .post("/signin", {
           email,
           password,
           Headers: {
@@ -74,67 +56,75 @@ const Signin = () => {
     }
   };
 
-  return (
-    <Card className="card">
-      <Card.Body>
-        <Card.Title className="title">SIGN IN</Card.Title>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Email address"
-              className="mb-3"
-            >
-              <Form.Control
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </FloatingLabel>
-          </Form.Group>
+  const renderSignin = () => {
+    return (
+      <Card className="card">
+        <Card.Body>
+          <Card.Title className="title">SIGN IN</Card.Title>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Email address"
+                className="mb-3"
+              >
+                <Form.Control
+                  type="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </FloatingLabel>
+            </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <FloatingLabel controlId="floatingPassword" label="Password">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </FloatingLabel>
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-          <br />
-          <br />
-          <Form.Group>
-            <LinkContainer to="/Signup">
-              <Form.Text id="passwordHelpBlock">
-                Don't have an account yet?
-              </Form.Text>
-            </LinkContainer>
-          </Form.Group>
-        </Form>
-      </Card.Body>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{message.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{message.body}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Card>
-  );
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <FloatingLabel controlId="floatingPassword" label="Password">
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </FloatingLabel>
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+            <br />
+            <br />
+            <Form.Group>
+              <LinkContainer to="/Signup">
+                <Form.Text id="passwordHelpBlock">
+                  Don't have an account yet?
+                </Form.Text>
+              </LinkContainer>
+            </Form.Group>
+          </Form>
+        </Card.Body>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>{message.title}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{message.body}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="outline-danger" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </Card>
+    );
+  };
+
+  useEffect(() => {
+    state && navigate("/");
+  });
+
+  return renderSignin();
 };
 
 export default Signin;

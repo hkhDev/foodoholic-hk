@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { LinkContainer } from "react-router-bootstrap";
@@ -11,7 +11,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState({});
-  // const [messageType, setMessageType] = useState("");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleClose = () => setShow(false);
 
@@ -26,26 +26,8 @@ const Signup = () => {
       setMessage({ title: "Warning!", body: "Invalid email" });
       setShow(true);
     } else {
-      // const newUserData = {
-      //   name,
-      //   email,
-      //   password,
-      // };
-
-      // await fetch("http://localhost:5000/signup", {
-      //   method: "post",
-      //   header: {
-      //     "Content-type": "application/json",
-      //   },
-      //   body: JSON.stringify(newUserData),
-      // })
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log(data);
-      //   })
-      //   .catch((err) => ({ err }));
       await axios
-        .post("http://localhost:5000/signup", {
+        .post("/signup", {
           name,
           email,
           password,
@@ -71,6 +53,10 @@ const Signup = () => {
       setShow(true);
     }
   };
+
+  useEffect(() => {
+    user && navigate("/");
+  });
 
   return (
     <>
@@ -129,7 +115,7 @@ const Signup = () => {
             <br />
             <br />
             <Form.Group>
-              <LinkContainer to="/Login">
+              <LinkContainer to="/Signin">
                 <Form.Text id="passwordHelpBlock">
                   Already have an account?
                 </Form.Text>

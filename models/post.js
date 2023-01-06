@@ -37,6 +37,10 @@ const postSchema = new mongoose.Schema({
     type: ObjectId,
     ref: "User",
   },
+  postedDate: {
+    type: String,
+    required: true,
+  },
 });
 
 mongoose.model("Post", postSchema); //if use export, may have error when you want to reuse the schema

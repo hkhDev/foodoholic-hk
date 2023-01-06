@@ -5,6 +5,12 @@ const Post = mongoose.model("Post");
 const requireLogin = require("../middleware/requireLogin");
 
 router.post("/createpost", requireLogin, (req, res) => {
+  const date = new Date().toLocaleDateString("en-CA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+  console.log(date);
   const { resName, resLocation, resDetails, resImgUrl } = req.body;
   if (!resName || !resLocation || !resDetails) {
     return res.status(422).json({ error: "Please add all the fields" });
@@ -16,6 +22,7 @@ router.post("/createpost", requireLogin, (req, res) => {
     resDetails,
     resImgUrl,
     postedBy: req.user,
+    postedDate: date,
   });
   post
     .save()
@@ -47,6 +54,44 @@ router.get("/myposts", requireLogin, (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+    });
+});
+
+router.get("/post/:postId", requireLogin, (req, res) => {
+  // console.log(req.body);
+  Post.findOne({ _id: req.params.postId })
+    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
+    .then((post) => {
+      res.json({ post });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+router.put("/updatepost", requireLogin, (req, res) => {
+  // console.log("Update post");
+  // console.log(req.body.postId);
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      resName: req.body.resName,
+      resLocation: req.body.resLocation,
+      resDetails: req.body.resDetails,
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      } else {
+        res.json(result);
+        console.log(result);
+      }
     });
 });
 

@@ -16,16 +16,17 @@ const NavBar = () => {
         <LinkContainer key={2} to="/Createpost">
           <Nav.Link>Create Post</Nav.Link>
         </LinkContainer>,
-        <Nav.Link
-          key={3}
-          onClick={() => {
-            localStorage.clear();
-            dispatch({ type: "CLEAR" });
-            navigate("/signin");
-          }}
-        >
-          Logout
-        </Nav.Link>,
+        <LinkContainer key={3} to="/signin">
+          <Nav.Link
+            key={3}
+            onClick={() => {
+              localStorage.clear();
+              dispatch({ type: "CLEAR" });
+            }}
+          >
+            Logout
+          </Nav.Link>
+        </LinkContainer>,
       ];
     } else {
       return [
@@ -39,7 +40,7 @@ const NavBar = () => {
     }
   };
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar collapseOnSelect bg="light" expand="lg">
       <Container>
         <LinkContainer to={state ? "/" : "/signin"}>
           <Navbar.Brand className="brand-logo">Foodoholic</Navbar.Brand>

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-const PopupModal = (props) => {
+const DelModal = (props) => {
   // const handleModalClose = () => setModalShow(false);
   // const handleModalShow = () => setModalShow(true);
 
@@ -34,4 +34,4 @@ const PopupModal = (props) => {
   );
 };
 
-export default PopupModal;
+export default DelModal;
