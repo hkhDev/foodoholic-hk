@@ -253,7 +253,7 @@ const PostDetail = () => {
                   />
                 </Card.Header>
                 {/* <Card.Header>Melody</Card.Header> */}
-                <Card.Img variant="top" src={post.resImgUrl} />
+                <Card.Img variant="top" src={post.resImgDetail.imgUrl} />
                 <Card.Body>
                   <Row>
                     <Col>

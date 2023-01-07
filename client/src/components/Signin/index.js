@@ -19,8 +19,6 @@ const Signin = () => {
   const handleSubmit = async (event) => {
     // prevent page refresh
     event.preventDefault();
-    console.log(`The value for the email: ${email}`);
-    console.log(`The value for the password: ${password}`);
     // email validation
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       console.log("Invalid email");

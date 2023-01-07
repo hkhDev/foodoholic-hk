@@ -14,9 +14,12 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  resImgUrl: {
-    type: String,
-    default: "no photo",
+  resImgDetail: {
+    imgUrl: { type: String, default: "no photo" },
+    imgId: {
+      type: String,
+      required: true,
+    },
   },
   likes: [
     {

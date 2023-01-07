@@ -10,16 +10,14 @@ const CreatePost = () => {
   const [resName, setResName] = useState("");
   const [resLocation, setResLocation] = useState("");
   const [resDetails, setResDetails] = useState("");
-  const [resImgUrl, setResImgURl] = useState("");
+  const [resImgDetail, setResImgDetail] = useState();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`Bearer ${localStorage.getItem("jwt")}`);
-    // console.log(resImg, resName, resLocation, resDetails);
     const formData = new FormData();
     formData.append("file", resImg);
     formData.append("upload_preset", "food-review");
-    formData.append("coud-name", "harriscloud");
+    formData.append("cloud-name", "harriscloud");
     axios
       .post(
         "https://api.cloudinary.com/v1_1/harriscloud/image/upload",
@@ -27,9 +25,13 @@ const CreatePost = () => {
       )
       .then((res) => {
         console.log("upload image");
-        // console.log(res.data);
+        console.log(res.data);
         // navigate("/Profile");
-        setResImgURl(res.data.secure_url);
+        // setResImgURl(res.data.secure_url);
+        setResImgDetail({
+          imgUrl: res.data.secure_url,
+          imgId: res.data.public_id,
+        });
         // setTimeout(() => {
         //   navigate("/login");
         // }, 1500);
@@ -45,12 +47,12 @@ const CreatePost = () => {
   const uploadPost = () => {
     axios
       .post(
-        "http://localhost:5000/createpost",
+        "/createpost",
         {
           resName,
           resLocation,
           resDetails,
-          resImgUrl,
+          resImgDetail,
         },
         {
           headers: {
@@ -66,8 +68,9 @@ const CreatePost = () => {
         setResImg({});
         setResName("");
         setResLocation("");
-        setResDetails("");
-        setResImgURl("");
+        setResDetails({});
+        // setResImgURl("");
+        setResImgDetail();
         navigate("/");
         // setTimeout(() => {
         //   navigate("/login");
@@ -80,10 +83,10 @@ const CreatePost = () => {
   };
 
   useEffect(() => {
-    if (resImgUrl) {
+    if (resImgDetail) {
       uploadPost();
     }
-  }, [resImgUrl]);
+  }, [resImgDetail]);
 
   return (
     <div>

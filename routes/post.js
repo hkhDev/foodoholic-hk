@@ -3,6 +3,20 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Post = mongoose.model("Post");
 const requireLogin = require("../middleware/requireLogin");
+const cloudinary = require("cloudinary").v2;
+const { CLOUD_NAME, CLOUD_KEY, CLOUD_KEY_SECRET } = require("../config/keys");
+
+cloudinary.config({
+  cloud_name: CLOUD_NAME,
+  api_key: CLOUD_KEY,
+  api_secret: CLOUD_KEY_SECRET,
+});
+
+// cloudinary.config({
+//   cloud_name: "harriscloud",
+//   api_key: "174659537836623",
+//   api_secret: "0-T2xasBcDf9yr0ghiTy9zmP-Z8",
+// });
 
 router.post("/createpost", requireLogin, (req, res) => {
   const date = new Date().toLocaleDateString("en-CA", {
@@ -11,7 +25,7 @@ router.post("/createpost", requireLogin, (req, res) => {
     day: "numeric",
   });
   console.log(date);
-  const { resName, resLocation, resDetails, resImgUrl } = req.body;
+  const { resName, resLocation, resDetails, resImgDetail } = req.body;
   if (!resName || !resLocation || !resDetails) {
     return res.status(422).json({ error: "Please add all the fields" });
   }
@@ -20,7 +34,7 @@ router.post("/createpost", requireLogin, (req, res) => {
     resName,
     resLocation,
     resDetails,
-    resImgUrl,
+    resImgDetail,
     postedBy: req.user,
     postedDate: date,
   });
@@ -192,6 +206,7 @@ router.delete("/deletepost/:postId", requireLogin, (req, res) => {
           .remove()
           .then(() => {
             res.json({ message: "Deleted Successfully" });
+            cloudinary.uploader.destroy(post.resImgDetail.imgId);
           })
           .catch((err) => {
             console.log(err);

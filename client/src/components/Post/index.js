@@ -70,7 +70,7 @@ const Post = (props) => {
   return (
     <Card style={{ width: "18rem" }}>
       <LinkContainer to={`/post/${props.post._id}`}>
-        <Card.Img variant="top" src={props.post.resImgUrl} />
+        <Card.Img variant="top" src={props.post.resImgDetail.imgUrl} />
       </LinkContainer>
       <Card.Body>
         <Card.Title>{props.post.resName}</Card.Title>
