@@ -22,8 +22,8 @@ const Profile = () => {
         },
       })
       .then((res) => {
-        console.log("Get post");
-        console.log(res.data.myposts);
+        // console.log("Get post");
+        // console.log(res.data.myposts);
         setMyPosts(res.data.myposts);
         setIsLoading(false);
       })

@@ -1,16 +1,22 @@
 import React, { useState, useContext } from "react";
 import { Modal, Button } from "react-bootstrap";
+import "./index.scss";
+// import { loadingEffect } from "../../../Home";
 
 const DelModal = (props) => {
   // const handleModalClose = () => setModalShow(false);
   // const handleModalShow = () => setModalShow(true);
 
   return (
-    <Modal show={props.delModalShow} onHide={props.handleDelModalClose}>
+    <Modal
+      show={props.delModalShow}
+      onHide={props.handleDelModalClose}
+      className="modal-background"
+    >
       <Modal.Header closeButton>
         <Modal.Title>{props.modalTitle}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>{props.modalBody}</Modal.Body>
+      <Modal.Body className="modal-body">{props.modalBody}</Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.handleDelModalClose}>
           Cancel

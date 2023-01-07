@@ -26,8 +26,8 @@ const UserProfile = () => {
         },
       })
       .then((res) => {
-        console.log("Get post");
-        console.log(res.data);
+        // console.log("Get post");
+        // console.log(res.data);
         setUserPosts(res.data);
         setIsLoading(false);
       })

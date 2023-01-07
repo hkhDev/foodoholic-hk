@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, FloatingLabel } from "react-bootstrap";
+import { Button, Form, FloatingLabel, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import { LinkContainer } from "react-router-bootstrap";
@@ -11,9 +11,23 @@ const CreatePost = () => {
   const [resLocation, setResLocation] = useState("");
   const [resDetails, setResDetails] = useState("");
   const [resImgDetail, setResImgDetail] = useState();
+  const [validated, setValidated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      // event.stopPropagation();
+    } else {
+      uploadImg(event);
+    }
+    setValidated(true);
+  };
+
+  const uploadImg = (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("file", resImg);
     formData.append("upload_preset", "food-review");
@@ -24,24 +38,17 @@ const CreatePost = () => {
         formData
       )
       .then((res) => {
-        console.log("upload image");
-        console.log(res.data);
-        // navigate("/Profile");
-        // setResImgURl(res.data.secure_url);
+        // console.log("upload image");
+        // console.log(res.data);
         setResImgDetail({
           imgUrl: res.data.secure_url,
           imgId: res.data.public_id,
         });
-        // setTimeout(() => {
-        //   navigate("/login");
-        // }, 1500);
-        // return resImgUrl;
       })
       .catch((error) => {
         console.log(error.response.data);
         // setMessage({ title: "Warning!", body: error.response.data.error });
       });
-    // uploadPost();
   };
 
   const uploadPost = () => {
@@ -62,23 +69,18 @@ const CreatePost = () => {
         }
       )
       .then((res) => {
-        console.log("upload post");
-        console.log(res.data);
-        // navigate("/Profile");
+        // console.log("upload post");
+        // console.log(res.data);
         setResImg({});
         setResName("");
         setResLocation("");
         setResDetails({});
-        // setResImgURl("");
         setResImgDetail();
+        setIsLoading(false);
         navigate("/");
-        // setTimeout(() => {
-        //   navigate("/login");
-        // }, 1500);
       })
       .catch((error) => {
         console.log(error.response.data);
-        // setMessage({ title: "Warning!", body: error.response.data.error });
       });
   };
 
@@ -90,23 +92,16 @@ const CreatePost = () => {
 
   return (
     <div>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicName">
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="validationCustom01">
           <Form.Control
+            required
             type="file"
             multiple
             onChange={(e) => {
               setResImg(e.target.files[0]);
             }}
           />
-          {/* <Figure>
-            <Figure.Image
-              width={240}
-              height={240}
-              alt="171x180"
-              src="https://t4.ftcdn.net/jpg/04/81/13/43/240_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg"
-            />
-          </Figure> */}
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicName">
           <FloatingLabel
@@ -115,6 +110,7 @@ const CreatePost = () => {
             className="mb-3"
           >
             <Form.Control
+              required
               type="text"
               placeholder="Restaurant Name"
               value={resName}
@@ -132,6 +128,7 @@ const CreatePost = () => {
             className="mb-3"
           >
             <Form.Control
+              required
               type="text"
               placeholder="Restaurant Location"
               value={resLocation}
@@ -145,6 +142,7 @@ const CreatePost = () => {
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <FloatingLabel controlId="floatingPassword" label="Details">
             <Form.Control
+              required
               as="textarea"
               aria-label="With textarea"
               placeholder="Details"
@@ -156,9 +154,22 @@ const CreatePost = () => {
           </FloatingLabel>
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
+        {isLoading ? (
+          <Button variant="primary" type="submit" disabled>
+            <Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />{" "}
+            Uploading...
+          </Button>
+        ) : (
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        )}
       </Form>
     </div>
   );

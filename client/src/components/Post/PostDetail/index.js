@@ -66,8 +66,8 @@ const PostDetail = () => {
         },
       })
       .then((res) => {
-        console.log("Get post");
-        console.log(res.data.post);
+        // console.log("Get post");
+        // console.log(res.data.post);
         setPost(res.data.post);
         setAllComments(res.data.post.comments);
         setIsLoading(false);
@@ -212,17 +212,26 @@ const PostDetail = () => {
                           overlay={
                             <Popover id="">
                               <Popover.Body>
-                                <>Delete </>
-                                <FontAwesomeIcon
-                                  icon={faTrash}
-                                  onClick={handleDelPostModalShow}
-                                />
-                                <br />
-                                <>Edit </>
-                                <FontAwesomeIcon
-                                  icon={faPen}
-                                  onClick={handleEditPostModalShow}
-                                />
+                                <Row>
+                                  <Col xs={8}>Delete</Col>
+                                  <Col xs={4}>
+                                    <FontAwesomeIcon
+                                      icon={faTrash}
+                                      onClick={handleDelPostModalShow}
+                                      className="delete-icon"
+                                    />
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col xs={8}>Edit</Col>
+                                  <Col xs={4}>
+                                    <FontAwesomeIcon
+                                      icon={faPen}
+                                      onClick={handleEditPostModalShow}
+                                      className="edit-icon"
+                                    />
+                                  </Col>
+                                </Row>
                               </Popover.Body>
                             </Popover>
                           }
@@ -255,20 +264,12 @@ const PostDetail = () => {
                 {/* <Card.Header>Melody</Card.Header> */}
                 <Card.Img variant="top" src={post.resImgDetail.imgUrl} />
                 <Card.Body>
-                  <Row>
-                    <Col>
-                      <Card.Title className="res-name">
-                        {post.resName}
-                      </Card.Title>
-                    </Col>
-                    <Col>
-                      <Card.Text className="res-location">
-                        {post.resLocation}
-                        <> / </>
-                        {post.postedDate}
-                      </Card.Text>
-                    </Col>
-                  </Row>
+                  <Card.Title className="res-name">{post.resName}</Card.Title>
+                  <Card.Text className="res-location">
+                    {post.resLocation}
+                    <> / </>
+                    {post.postedDate}
+                  </Card.Text>
                   <Row>
                     <Card.Text className="res-detail">
                       <LinkContainer

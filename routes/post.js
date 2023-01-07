@@ -19,12 +19,11 @@ cloudinary.config({
 // });
 
 router.post("/createpost", requireLogin, (req, res) => {
-  const date = new Date().toLocaleDateString("en-CA", {
+  const date = new Date().toLocaleDateString("en", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
-  console.log(date);
   const { resName, resLocation, resDetails, resImgDetail } = req.body;
   if (!resName || !resLocation || !resDetails) {
     return res.status(422).json({ error: "Please add all the fields" });
