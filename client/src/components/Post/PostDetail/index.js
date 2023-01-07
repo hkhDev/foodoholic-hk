@@ -20,10 +20,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faHeart as faHeartReg } from "@fortawesome/free-regular-svg-icons";
 import {
   faTrash,
-  faEllipsisVertical,
   faPen,
   faCaretDown,
   faHandMiddleFinger as faHandMiddleFingerSolid,
+  faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faComment,
@@ -266,7 +266,7 @@ const PostDetail = () => {
                 <Card.Body>
                   <Card.Title className="res-name">{post.resName}</Card.Title>
                   <Card.Text className="res-location">
-                    {post.resLocation}
+                    <FontAwesomeIcon icon={faLocationDot} /> {post.resLocation}
                     <> / </>
                     {post.postedDate}
                   </Card.Text>
@@ -288,7 +288,7 @@ const PostDetail = () => {
                     allComments.map((comment) => {
                       return (
                         <Row key={comment._id}>
-                          <Col xs={11} className="res-comment">
+                          <Col xs={10} className="res-comment">
                             <Card.Text>
                               <LinkContainer
                                 to={
@@ -302,7 +302,7 @@ const PostDetail = () => {
                               {comment.text}
                             </Card.Text>
                           </Col>
-                          <Col xs={1} className="res-comment-delete">
+                          <Col xs={2} className="res-comment-delete">
                             {comment.postedBy._id === state._id && (
                               <FontAwesomeIcon
                                 icon={faTrash}

@@ -2,29 +2,40 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { LinkContainer } from "react-router-bootstrap";
-import { Button, Card, Form, FloatingLabel, Modal } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Form,
+  FloatingLabel,
+  Modal,
+  InputGroup,
+} from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [show, setShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [passwordHidden, setPasswordHidden] = useState(true);
+  const [signUpStatus, setSignUpStatus] = useState(false);
   const [message, setMessage] = useState({});
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setModalShow(false);
+    signUpStatus && navigate("/signin");
+  };
 
   const handleSubmit = async (event) => {
     // prevent page refresh
     event.preventDefault();
-    console.log(`The value for the name: ${name}`);
-    console.log(`The value for the email: ${email}`);
-    console.log(`The value for the password: ${password}`);
     // email validation
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       setMessage({ title: "Warning!", body: "Invalid email" });
-      setShow(true);
+      setModalShow(true);
     } else {
       await axios
         .post("/signup", {
@@ -36,21 +47,17 @@ const Signup = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);
           setMessage({ title: "Success!", body: res.data.message });
           setEmail("");
           setName("");
           setPassword("");
-          setTimeout(() => {
-            navigate("/login");
-          }, 1500);
+          setSignUpStatus(true);
         })
         .catch((error) => {
-          console.log(error.response.data);
+          // console.log(error.response.data);
           setMessage({ title: "Warning!", body: error.response.data.error });
         });
-      console.log("form submitted ✅");
-      setShow(true);
+      setModalShow(true);
     }
   };
 
@@ -97,10 +104,10 @@ const Signup = () => {
               </FloatingLabel>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <InputGroup className="mb-3">
               <FloatingLabel controlId="floatingPassword" label="Password">
                 <Form.Control
-                  type="password"
+                  type={passwordHidden ? "password" : "text"}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => {
@@ -108,7 +115,13 @@ const Signup = () => {
                   }}
                 />
               </FloatingLabel>
-            </Form.Group>
+              <InputGroup.Text>
+                <FontAwesomeIcon
+                  icon={passwordHidden ? faEye : faEyeSlash}
+                  onClick={() => setPasswordHidden(!passwordHidden)}
+                />
+              </InputGroup.Text>
+            </InputGroup>
             <Button variant="primary" type="submit">
               Sign Up
             </Button>
@@ -123,7 +136,7 @@ const Signup = () => {
             </Form.Group>
           </Form>
         </Card.Body>
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={modalShow} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>{message.title}</Modal.Title>
           </Modal.Header>

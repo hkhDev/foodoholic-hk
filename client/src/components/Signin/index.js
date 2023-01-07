@@ -3,7 +3,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../App";
 import { LinkContainer } from "react-router-bootstrap";
-import { Button, Card, Form, FloatingLabel, Modal } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Form,
+  FloatingLabel,
+  Modal,
+  InputGroup,
+} from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import "./index.scss";
 
 const Signin = () => {
@@ -11,19 +20,20 @@ const Signin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [show, setShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [passwordHidden, setPasswordHidden] = useState(true);
   const [message, setMessage] = useState({});
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => setModalShow(false);
 
   const handleSubmit = async (event) => {
     // prevent page refresh
     event.preventDefault();
     // email validation
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-      console.log("Invalid email");
+      // console.log("Invalid email");
       setMessage({ title: "Warning!", body: "Invalid email" });
-      setShow(true);
+      setModalShow(true);
     } else {
       await axios
         .post("/signin", {
@@ -34,23 +44,19 @@ const Signin = () => {
           },
         })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           navigate("/");
           setEmail("");
           setPassword("");
           localStorage.setItem("jwt", res.data.token);
           localStorage.setItem("user", JSON.stringify(res.data.user));
           dispatch({ type: "USER", payload: res.data.user });
-          // setTimeout(() => {
-          //   navigate("/login");
-          // }, 1500);
         })
         .catch((error) => {
-          console.log(error.response.data);
+          // console.log(error.response.data);
           setMessage({ title: "Warning!", body: error.response.data.error });
         });
-      console.log("form submitted ✅");
-      setShow(true);
+      setModalShow(true);
     }
   };
 
@@ -77,10 +83,10 @@ const Signin = () => {
               </FloatingLabel>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
+            <InputGroup className="mb-3">
               <FloatingLabel controlId="floatingPassword" label="Password">
                 <Form.Control
-                  type="password"
+                  type={passwordHidden ? "password" : "text"}
                   placeholder="Password"
                   value={password}
                   onChange={(e) => {
@@ -88,7 +94,13 @@ const Signin = () => {
                   }}
                 />
               </FloatingLabel>
-            </Form.Group>
+              <InputGroup.Text>
+                <FontAwesomeIcon
+                  icon={passwordHidden ? faEye : faEyeSlash}
+                  onClick={() => setPasswordHidden(!passwordHidden)}
+                />
+              </InputGroup.Text>
+            </InputGroup>
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -103,7 +115,7 @@ const Signin = () => {
             </Form.Group>
           </Form>
         </Card.Body>
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={modalShow} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>{message.title}</Modal.Title>
           </Modal.Header>

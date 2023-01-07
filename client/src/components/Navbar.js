@@ -31,10 +31,10 @@ const NavBar = () => {
     } else {
       return [
         <LinkContainer key={1} to="/Signup">
-          <Nav.Link>Signup</Nav.Link>
+          <Nav.Link>Sign Up</Nav.Link>
         </LinkContainer>,
         <LinkContainer key={2} to="/Signin">
-          <Nav.Link>Login</Nav.Link>
+          <Nav.Link>Sign In</Nav.Link>
         </LinkContainer>,
       ];
     }

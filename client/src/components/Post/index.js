@@ -3,7 +3,10 @@ import React, { useState, useContext } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHandMiddleFinger as faHandMiddleFingerSolid } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLocationDot,
+  faHandMiddleFinger as faHandMiddleFingerSolid,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   faComment,
   faHandPointUp as faHandMiddleFingerReg,
@@ -74,7 +77,9 @@ const Post = (props) => {
       </LinkContainer>
       <Card.Body>
         <Card.Title>{props.post.resName}</Card.Title>
-        <Card.Text>{props.post.resLocation}</Card.Text>
+        <Card.Text>
+          <FontAwesomeIcon icon={faLocationDot} /> {props.post.resLocation}
+        </Card.Text>
         <Container>
           <Row>
             <Col></Col>
