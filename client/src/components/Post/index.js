@@ -73,7 +73,7 @@ const Post = (props) => {
   return (
     <Card style={{ width: "18rem" }}>
       <LinkContainer to={`/post/${props.post._id}`}>
-        <Card.Img variant="top" src={props.post.resImgDetail.imgUrl} />
+        <Card.Img variant="top" src={props.post.resImgsDetail[0].imgUrl} />
       </LinkContainer>
       <Card.Body>
         <Card.Title>{props.post.resName}</Card.Title>
@@ -100,8 +100,10 @@ const Post = (props) => {
               {likes}
             </Col>
             <Col>
-              <FontAwesomeIcon icon={faComment} />
-              <> </> {props.post.comments.length}
+              <LinkContainer to={`/post/${props.post._id}`}>
+                <FontAwesomeIcon icon={faComment} />
+              </LinkContainer>{" "}
+              {props.post.comments.length}
             </Col>
             <Col></Col>
           </Row>

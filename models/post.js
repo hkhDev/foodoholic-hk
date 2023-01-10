@@ -14,13 +14,15 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  resImgDetail: {
-    imgUrl: { type: String, default: "no photo" },
-    imgId: {
-      type: String,
-      required: true,
+  resImgsDetail: [
+    {
+      imgUrl: { type: String, default: "no photo" },
+      imgId: {
+        type: String,
+        required: true,
+      },
     },
-  },
+  ],
   likes: [
     {
       type: ObjectId,

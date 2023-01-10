@@ -34,6 +34,7 @@ import DelModal from "./DelModal";
 import UpdateModal from "./UpdateModal";
 import "./index.scss";
 import { loadingEffect } from "../../Home";
+import ImgCarousels from "./ImgCarousels";
 
 const PostDetail = () => {
   const navigate = useNavigate();
@@ -261,8 +262,11 @@ const PostDetail = () => {
                     handleEditModalClose={handleEditPostModalClose}
                   />
                 </Card.Header>
-                {/* <Card.Header>Melody</Card.Header> */}
-                <Card.Img variant="top" src={post.resImgDetail.imgUrl} />
+                {post.resImgsDetail.length > 1 ? (
+                  <ImgCarousels imgDetail={post.resImgsDetail} />
+                ) : (
+                  <Card.Img variant="top" src={post.resImgsDetail[0].imgUrl} />
+                )}
                 <Card.Body>
                   <Card.Title className="res-name">{post.resName}</Card.Title>
                   <Card.Text className="res-location">

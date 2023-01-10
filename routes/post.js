@@ -12,28 +12,23 @@ cloudinary.config({
   api_secret: CLOUD_KEY_SECRET,
 });
 
-// cloudinary.config({
-//   cloud_name: "harriscloud",
-//   api_key: "174659537836623",
-//   api_secret: "0-T2xasBcDf9yr0ghiTy9zmP-Z8",
-// });
-
 router.post("/createpost", requireLogin, (req, res) => {
   const date = new Date().toLocaleDateString("en", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
-  const { resName, resLocation, resDetails, resImgDetail } = req.body;
+  const { resName, resLocation, resDetails, resImgsDetail } = req.body;
   if (!resName || !resLocation || !resDetails) {
     return res.status(422).json({ error: "Please add all the fields" });
   }
   req.user.password = undefined;
+  console.log(resImgsDetail);
   const post = new Post({
     resName,
     resLocation,
     resDetails,
-    resImgDetail,
+    resImgsDetail,
     postedBy: req.user,
     postedDate: date,
   });
@@ -205,7 +200,9 @@ router.delete("/deletepost/:postId", requireLogin, (req, res) => {
           .remove()
           .then(() => {
             res.json({ message: "Deleted Successfully" });
-            cloudinary.uploader.destroy(post.resImgDetail.imgId);
+            post.resImgsDetail.map((img) => {
+              cloudinary.uploader.destroy(img.imgId);
+            });
           })
           .catch((err) => {
             console.log(err);

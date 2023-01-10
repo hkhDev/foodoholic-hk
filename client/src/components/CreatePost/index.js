@@ -1,21 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, FloatingLabel, Spinner } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  FloatingLabel,
+  Spinner,
+  Container,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
+import "./index.scss";
 // import { LinkContainer } from "react-router-bootstrap";
 
 const CreatePost = () => {
   const navigate = useNavigate();
-  const [resImg, setResImg] = useState({});
+  const [resImgs, setResImgs] = useState([]);
   const [resName, setResName] = useState("");
   const [resLocation, setResLocation] = useState("");
   const [resDetails, setResDetails] = useState("");
-  const [resImgDetail, setResImgDetail] = useState();
+  const [resImgsDetail, setResImgsDetail] = useState([]);
+  const [uploadedImgNum, setUploadedImgNum] = useState(0);
   const [validated, setValidated] = useState(false);
+  const [validatedImg, setValidatedImg] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [imgLimit, setImgLimit] = useState(false);
+  const [displayImgLimitMsg, setDisplayImgLimitMsg] = useState(false);
+
+  const imgMax = 10;
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
+    resImgs.length < 1 ? setValidatedImg(false) : setValidatedImg(true);
     if (form.checkValidity() === false) {
       event.preventDefault();
       // event.stopPropagation();
@@ -25,30 +43,74 @@ const CreatePost = () => {
     setValidated(true);
   };
 
+  const handleFileEvent = (imgs) => {
+    const chosenFiles = Array.prototype.slice.call(imgs);
+    // console.log(chosenFiles);
+    handledSelectedFiles(chosenFiles);
+    setValidatedImg(true);
+  };
+
+  const handledSelectedFiles = (imgs) => {
+    const selectedImg = [...resImgs];
+    let limitExceeded = false;
+
+    imgs.some((img) => {
+      if (selectedImg.findIndex((f) => f.name === img.name) === -1) {
+        selectedImg.push(img);
+        if (selectedImg.length === imgMax) {
+          setImgLimit(true);
+        }
+        if (selectedImg.length > imgMax) {
+          setDisplayImgLimitMsg(true);
+          // alert(`You can only add ${imgMax} images`);
+          setImgLimit(false);
+          limitExceeded = true;
+          return true;
+        }
+      }
+    });
+    // console.log(`All uploaded img:`);
+    if (!limitExceeded) {
+      setResImgs(selectedImg);
+      setDisplayImgLimitMsg(false);
+    }
+  };
+
+  const deleteSelectedImg = (img) => {
+    setResImgs(resImgs.filter((resImg) => resImg.name !== img.name));
+    setImgLimit(false);
+  };
+
   const uploadImg = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const formData = new FormData();
-    formData.append("file", resImg);
-    formData.append("upload_preset", "food-review");
-    formData.append("cloud-name", "harriscloud");
-    axios
-      .post(
-        "https://api.cloudinary.com/v1_1/harriscloud/image/upload",
-        formData
-      )
-      .then((res) => {
-        // console.log("upload image");
-        // console.log(res.data);
-        setResImgDetail({
-          imgUrl: res.data.secure_url,
-          imgId: res.data.public_id,
+    let uploadedImage = 0;
+    // console.log(resImgs);
+    const uploadedImageDetails = [];
+    resImgs.forEach((resImg) => {
+      const formData = new FormData();
+      formData.append("file", resImg);
+      formData.append("upload_preset", "food-review");
+      formData.append("cloud-name", "harriscloud");
+      axios
+        .post(
+          "https://api.cloudinary.com/v1_1/harriscloud/image/upload",
+          formData
+        )
+        .then((res) => {
+          uploadedImageDetails.push({
+            imgUrl: res.data.secure_url,
+            imgId: res.data.public_id,
+          });
+          uploadedImage = uploadedImage + 1;
+          // console.log(uploadedImageDetails);
+          setResImgsDetail(uploadedImageDetails);
+          setUploadedImgNum(uploadedImage);
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        // setMessage({ title: "Warning!", body: error.response.data.error });
-      });
+    });
   };
 
   const uploadPost = () => {
@@ -59,7 +121,7 @@ const CreatePost = () => {
           resName,
           resLocation,
           resDetails,
-          resImgDetail,
+          resImgsDetail,
         },
         {
           headers: {
@@ -71,11 +133,11 @@ const CreatePost = () => {
       .then((res) => {
         // console.log("upload post");
         // console.log(res.data);
-        setResImg({});
+        setResImgs([]);
         setResName("");
         setResLocation("");
         setResDetails({});
-        setResImgDetail();
+        setResImgsDetail();
         setIsLoading(false);
         navigate("/");
       })
@@ -85,25 +147,57 @@ const CreatePost = () => {
   };
 
   useEffect(() => {
-    if (resImgDetail) {
+    uploadedImgNum > 0 &&
+      resImgsDetail.length == resImgs.length &&
       uploadPost();
-    }
-  }, [resImgDetail]);
+  }, [uploadedImgNum]);
 
   return (
-    <div>
+    <Container fluid className="create-post">
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="validationCustom01">
+        <Form.Group className="mb-3" controlId="formResImgs">
           <Form.Control
             required
+            style={{ display: "none" }}
             type="file"
             multiple
             onChange={(e) => {
-              setResImg(e.target.files[0]);
+              handleFileEvent(e.target.files);
             }}
+            disabled={imgLimit}
           />
+          <label htmlFor="formResImgs">
+            <a className={imgLimit ? "btn btn-secondary" : "btn btn-primary"}>
+              Upload Files (max 10)
+            </a>{" "}
+            {!validatedImg && (
+              <span className="img-error-msg">Please upload image</span>
+            )}
+            {displayImgLimitMsg && (
+              <span className="img-error-msg">Image Limit Exceeded</span>
+            )}
+          </label>
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicName">
+        {resImgs &&
+          resImgs.map((img, index) => {
+            return (
+              <Container fluid key={index}>
+                <Row className="selected-image">
+                  <Col xs={10}>{img.name} </Col>
+                  <Col xs={2} className="deleteIcon">
+                    <FontAwesomeIcon
+                      icon={faX}
+                      onClick={() => {
+                        deleteSelectedImg(img);
+                      }}
+                    />
+                  </Col>
+                </Row>
+              </Container>
+            );
+          })}
+
+        <Form.Group className="mb-3" controlId="formResName">
           <FloatingLabel
             controlId="floatingInput"
             label="Restaurant Name"
@@ -121,7 +215,7 @@ const CreatePost = () => {
           </FloatingLabel>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicLocation">
+        <Form.Group className="mb-3" controlId="formResLocation">
           <FloatingLabel
             controlId="floatingInput"
             label="Restaurant Location"
@@ -139,7 +233,7 @@ const CreatePost = () => {
           </FloatingLabel>
         </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Group className="mb-3" controlId="formResDetails">
           <FloatingLabel controlId="floatingPassword" label="Details">
             <Form.Control
               required
@@ -171,7 +265,7 @@ const CreatePost = () => {
           </Button>
         )}
       </Form>
-    </div>
+    </Container>
   );
 };
 

@@ -1,0 +1,12 @@
+.create-post {
+  .img-error-msg {
+    color: red;
+  }
+  .selected-image {
+    border: solid;
+    margin-bottom: 1rem;
+    .deleteIcon {
+      text-align: right;
+    }
+  }
+}
