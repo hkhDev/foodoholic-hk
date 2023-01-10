@@ -40,6 +40,7 @@ const PostDetail = () => {
   const navigate = useNavigate();
   const { state, dispatch } = useContext(UserContext);
   const [post, setPost] = useState();
+  const [postCreatedAt, setPostCreatedAt] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState("");
@@ -71,6 +72,13 @@ const PostDetail = () => {
         // console.log(res.data.post);
         setPost(res.data.post);
         setAllComments(res.data.post.comments);
+        setPostCreatedAt(
+          new Date(res.data.post.createdAt).toLocaleDateString("en", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })
+        );
         setIsLoading(false);
       })
       .catch((error) => {
@@ -272,7 +280,7 @@ const PostDetail = () => {
                   <Card.Text className="res-location">
                     <FontAwesomeIcon icon={faLocationDot} /> {post.resLocation}
                     <> / </>
-                    {post.postedDate}
+                    {postCreatedAt}
                   </Card.Text>
                   <Row>
                     <Card.Text className="res-detail">

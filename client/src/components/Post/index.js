@@ -20,6 +20,15 @@ const Post = (props) => {
     props.post.likes.includes(state._id)
   );
 
+  const postCreatedAt = new Date(props.post.createdAt).toLocaleDateString(
+    "en",
+    {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }
+  );
+
   const likePost = (id) => {
     axios
       .put(
@@ -119,8 +128,7 @@ const Post = (props) => {
           }
         >
           <span>
-            by <strong>{props.post.postedBy.name}</strong> /{" "}
-            {props.post.postedDate}
+            by <strong>{props.post.postedBy.name}</strong> / {postCreatedAt}
           </span>
         </LinkContainer>
       </Card.Footer>

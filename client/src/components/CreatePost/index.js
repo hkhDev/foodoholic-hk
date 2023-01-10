@@ -31,7 +31,7 @@ const CreatePost = () => {
 
   const imgMax = 10;
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     const form = event.currentTarget;
     resImgs.length < 1 ? setValidatedImg(false) : setValidatedImg(true);
     if (form.checkValidity() === false) {

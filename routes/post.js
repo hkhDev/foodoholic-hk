@@ -13,24 +13,23 @@ cloudinary.config({
 });
 
 router.post("/createpost", requireLogin, (req, res) => {
-  const date = new Date().toLocaleDateString("en", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  // const date = new Date().toLocaleDateString("en", {
+  //   year: "numeric",
+  //   month: "short",
+  //   day: "numeric",
+  // });
   const { resName, resLocation, resDetails, resImgsDetail } = req.body;
   if (!resName || !resLocation || !resDetails) {
     return res.status(422).json({ error: "Please add all the fields" });
   }
   req.user.password = undefined;
-  console.log(resImgsDetail);
+  // console.log(resImgsDetail);
   const post = new Post({
     resName,
     resLocation,
     resDetails,
     resImgsDetail,
     postedBy: req.user,
-    postedDate: date,
   });
   post
     .save()
@@ -46,6 +45,7 @@ router.get("/allpost", requireLogin, (req, res) => {
   Post.find()
     .populate("postedBy", "_id name")
     .populate("comments.postedBy", "_id name")
+    .sort("-createdAt")
     .then((posts) => {
       res.json({ posts });
     })
@@ -57,6 +57,7 @@ router.get("/allpost", requireLogin, (req, res) => {
 router.get("/myposts", requireLogin, (req, res) => {
   Post.find({ postedBy: req.user._id })
     .populate("postedBy", "_id name")
+    .sort("-createdAt")
     .then((myposts) => {
       res.json({ myposts });
     })
