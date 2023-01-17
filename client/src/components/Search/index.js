@@ -126,13 +126,13 @@ const Search = () => {
             >
               Restaurant Name
             </Dropdown.Item>
-            <Dropdown.Item
+            {/* <Dropdown.Item
               onClick={(e) => {
                 setSearchParam("resLocation");
               }}
             >
               Restaurant Location
-            </Dropdown.Item>
+            </Dropdown.Item> */}
           </DropdownButton>
           <Form.Control
             aria-label="Text input with dropdown button"

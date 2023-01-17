@@ -102,18 +102,20 @@ const Post = (props) => {
         <Container>
           <Row>
             <Col></Col>
-            <Col className="hand-cursor">
+            <Col
+              className="hand-cursor"
+              onClick={() => {
+                if (likeStatus) {
+                  unlikePost(props.post._id);
+                } else {
+                  likePost(props.post._id);
+                }
+              }}
+            >
               <FontAwesomeIcon
                 icon={
                   likeStatus ? faHandMiddleFingerSolid : faHandMiddleFingerReg
                 }
-                onClick={() => {
-                  if (likeStatus) {
-                    unlikePost(props.post._id);
-                  } else {
-                    likePost(props.post._id);
-                  }
-                }}
               />
               <> </>
               {likes}
