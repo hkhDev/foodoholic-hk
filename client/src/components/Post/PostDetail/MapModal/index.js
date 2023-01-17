@@ -21,21 +21,20 @@ const MapModal = (props) => {
           show={props.mapModalShow}
           onHide={props.handleMapModalClose}
           className="map-modal-background"
+          fullscreen={true}
         >
           {/* <Modal.Header closeButton></Modal.Header> */}
           <Modal.Body>
-            <div className="map-modal-body">
-              <GoogleMap
-                center={resLatLgg}
-                zoom={15}
-                mapContainerStyle={{ width: "100%", height: "100%" }}
-                options={{
-                  mapTypeControl: false,
-                }}
-              >
-                <MarkerF position={resLatLgg} />
-              </GoogleMap>
-            </div>
+            <GoogleMap
+              center={resLatLgg}
+              zoom={15}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+              options={{
+                mapTypeControl: false,
+              }}
+            >
+              <MarkerF position={resLatLgg} />
+            </GoogleMap>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={props.handleMapModalClose}>Close</Button>

@@ -11,7 +11,7 @@ const DelModal = (props) => {
     <Modal
       show={props.delModalShow}
       onHide={props.handleDelModalClose}
-      className="modal-background"
+      className="del-modal"
     >
       <Modal.Header closeButton>
         <Modal.Title>{props.modalTitle}</Modal.Title>

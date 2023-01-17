@@ -52,10 +52,16 @@ const PostDetail = () => {
   const { postId } = useParams();
 
   const handleEditPostModalClose = () => setEditPostModalShow(false);
-  const handleEditPostModalShow = () => setEditPostModalShow(true);
+  const handleEditPostModalShow = () => {
+    setEditPostModalShow(true);
+    document.body.click();
+  };
 
   const handleDelPostModalClose = () => setDelPostModalShow(false);
-  const handleDelPostModalShow = () => setDelPostModalShow(true);
+  const handleDelPostModalShow = () => {
+    setDelPostModalShow(true);
+    document.body.click();
+  };
 
   const handleMapModalClose = () => setMapModalShow(false);
   const handleMapModalShow = () => {
@@ -220,6 +226,7 @@ const PostDetail = () => {
                         <OverlayTrigger
                           trigger="click"
                           placement="bottom"
+                          rootClose
                           overlay={
                             <Popover id="">
                               <Popover.Body>
