@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Button,
   Form,
@@ -12,6 +12,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import { useJsApiLoader, Autocomplete } from "@react-google-maps/api";
+// import {
+//   geocodeByAddress,
+//   getLatLng,
+//   geocodeByLatLng,
+// } from "react-google-places-autocomplete";
 import "./index.scss";
 // import { LinkContainer } from "react-router-bootstrap";
 
@@ -19,7 +25,7 @@ const CreatePost = () => {
   const navigate = useNavigate();
   const [resImgs, setResImgs] = useState([]);
   const [resName, setResName] = useState("");
-  const [resLocation, setResLocation] = useState("");
+  // const [resLocation, setResLocation] = useState("");
   const [resDetails, setResDetails] = useState("");
   const [resImgsDetail, setResImgsDetail] = useState([]);
   const [uploadedImgNum, setUploadedImgNum] = useState(0);
@@ -28,10 +34,21 @@ const CreatePost = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [imgLimit, setImgLimit] = useState(false);
   const [displayImgLimitMsg, setDisplayImgLimitMsg] = useState(false);
+  const resLocation = useRef();
+
+  const [libraries] = useState(["places"]);
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDIepUcuQ8sApkWzlj2F077OU_PwZFSyhY",
+    libraries,
+  });
 
   const imgMax = 10;
 
   const handleSubmit = (event) => {
+    // console.log(resLocation.current.value);
+    // event.preventDefault();
+    console.log(typeof resLocation.current.value);
     const form = event.currentTarget;
     resImgs.length < 1 ? setValidatedImg(false) : setValidatedImg(true);
     if (form.checkValidity() === false) {
@@ -119,7 +136,7 @@ const CreatePost = () => {
         "/createpost",
         {
           resName,
-          resLocation,
+          resLocation: resLocation.current.value,
           resDetails,
           resImgsDetail,
         },
@@ -135,7 +152,7 @@ const CreatePost = () => {
         // console.log(res.data);
         setResImgs([]);
         setResName("");
-        setResLocation("");
+        // setResLocation("");
         setResDetails({});
         setResImgsDetail();
         setIsLoading(false);
@@ -153,119 +170,135 @@ const CreatePost = () => {
   }, [uploadedImgNum]);
 
   return (
-    <Container fluid className="create-post">
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formResImgs">
-          <Form.Control
-            required
-            style={{ display: "none" }}
-            type="file"
-            multiple
-            onChange={(e) => {
-              handleFileEvent(e.target.files);
-            }}
-            disabled={imgLimit}
-          />
-          <label htmlFor="formResImgs">
-            <a className={imgLimit ? "btn btn-secondary" : "btn btn-primary"}>
-              Upload Files (max 10)
-            </a>{" "}
-            {!validatedImg && (
-              <span className="img-error-msg">Please upload image</span>
+    <>
+      {isLoaded && (
+        <Container fluid className="create-post">
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formResImgs">
+              <Form.Control
+                required
+                style={{ display: "none" }}
+                type="file"
+                multiple
+                onChange={(e) => {
+                  handleFileEvent(e.target.files);
+                }}
+                disabled={imgLimit}
+              />
+              <label htmlFor="formResImgs">
+                <a
+                  className={imgLimit ? "btn btn-secondary" : "btn btn-primary"}
+                >
+                  Upload Files (max 10)
+                </a>{" "}
+                {!validatedImg && (
+                  <span className="img-error-msg">Please upload image</span>
+                )}
+                {displayImgLimitMsg && (
+                  <span className="img-error-msg">Image Limit Exceeded</span>
+                )}
+              </label>
+            </Form.Group>
+            {resImgs &&
+              resImgs.map((img, index) => {
+                return (
+                  <Container fluid key={index}>
+                    <Row className="selected-image">
+                      <Col xs={10}>{img.name} </Col>
+                      <Col xs={2} className="deleteIcon">
+                        <FontAwesomeIcon
+                          icon={faX}
+                          onClick={() => {
+                            deleteSelectedImg(img);
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  </Container>
+                );
+              })}
+
+            <Form.Group className="mb-3" controlId="formResName">
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Restaurant Name"
+                className="mb-3"
+              >
+                <Form.Control
+                  required
+                  type="text"
+                  placeholder="Restaurant Name"
+                  value={resName}
+                  onChange={(e) => {
+                    setResName(e.target.value);
+                  }}
+                />
+              </FloatingLabel>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formResLocation">
+              <Autocomplete
+                options={{
+                  componentRestrictions: { country: ["ca"] },
+                  // language: "en",
+                }}
+                onSelect={(e) => console.log(e.target.value)}
+              >
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Restaurant Location"
+                  className="mb-3"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    placeholder="Restaurant Location"
+                    // value={resLocation}
+                    // onChange={(e) => {
+                    //   console.log(e.target.value);
+                    //   setResLocation(e.target.value);
+                    // }}
+                    ref={resLocation}
+                  />
+                </FloatingLabel>
+              </Autocomplete>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formResDetails">
+              <FloatingLabel controlId="floatingPassword" label="Details">
+                <Form.Control
+                  required
+                  as="textarea"
+                  aria-label="With textarea"
+                  placeholder="Details"
+                  value={resDetails}
+                  onChange={(e) => {
+                    setResDetails(e.target.value);
+                  }}
+                />
+              </FloatingLabel>
+            </Form.Group>
+
+            {isLoading ? (
+              <Button variant="primary" type="submit" disabled>
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />{" "}
+                Uploading...
+              </Button>
+            ) : (
+              <Button variant="primary" type="submit">
+                Submit
+              </Button>
             )}
-            {displayImgLimitMsg && (
-              <span className="img-error-msg">Image Limit Exceeded</span>
-            )}
-          </label>
-        </Form.Group>
-        {resImgs &&
-          resImgs.map((img, index) => {
-            return (
-              <Container fluid key={index}>
-                <Row className="selected-image">
-                  <Col xs={10}>{img.name} </Col>
-                  <Col xs={2} className="deleteIcon">
-                    <FontAwesomeIcon
-                      icon={faX}
-                      onClick={() => {
-                        deleteSelectedImg(img);
-                      }}
-                    />
-                  </Col>
-                </Row>
-              </Container>
-            );
-          })}
-
-        <Form.Group className="mb-3" controlId="formResName">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Restaurant Name"
-            className="mb-3"
-          >
-            <Form.Control
-              required
-              type="text"
-              placeholder="Restaurant Name"
-              value={resName}
-              onChange={(e) => {
-                setResName(e.target.value);
-              }}
-            />
-          </FloatingLabel>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="formResLocation">
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Restaurant Location"
-            className="mb-3"
-          >
-            <Form.Control
-              required
-              type="text"
-              placeholder="Restaurant Location"
-              value={resLocation}
-              onChange={(e) => {
-                setResLocation(e.target.value);
-              }}
-            />
-          </FloatingLabel>
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="formResDetails">
-          <FloatingLabel controlId="floatingPassword" label="Details">
-            <Form.Control
-              required
-              as="textarea"
-              aria-label="With textarea"
-              placeholder="Details"
-              value={resDetails}
-              onChange={(e) => {
-                setResDetails(e.target.value);
-              }}
-            />
-          </FloatingLabel>
-        </Form.Group>
-
-        {isLoading ? (
-          <Button variant="primary" type="submit" disabled>
-            <Spinner
-              as="span"
-              animation="grow"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />{" "}
-            Uploading...
-          </Button>
-        ) : (
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        )}
-      </Form>
-    </Container>
+          </Form>
+        </Container>
+      )}
+    </>
   );
 };
 

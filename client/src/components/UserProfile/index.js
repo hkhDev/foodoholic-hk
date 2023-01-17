@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-// import { UserContext } from "../../App";
+import React, { useState, useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -9,15 +8,14 @@ import { loadingEffect } from "../Home";
 const UserProfile = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const { state, dispatch } = useContext(UserContext);
   const { userId } = useParams();
-  // console.log(userId);
+
   useEffect(() => {
     getUserPost();
   }, []);
 
   const getUserPost = () => {
-    console.log("called api");
+    // console.log("called api");
     axios
       .get(`/user/${userId}`, {
         headers: {

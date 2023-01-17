@@ -42,9 +42,7 @@ const Home = () => {
 
   const renderPost = () => {
     if (posts.length > 0) {
-      return posts.map((post) => (
-        <Post key={post._id} post={post} getPost={getAllPost} />
-      ));
+      return posts.map((post) => <Post key={post._id} post={post} />);
     }
   };
   return <div>{isLoading ? loadingEffect() : renderPost()}</div>;

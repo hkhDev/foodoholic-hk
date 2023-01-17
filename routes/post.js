@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Post = mongoose.model("Post");
 const requireLogin = require("../middleware/requireLogin");
 const cloudinary = require("cloudinary").v2;
+const { Client } = require("@googlemaps/google-maps-services-js");
 const { CLOUD_NAME, CLOUD_KEY, CLOUD_KEY_SECRET } = require("../config/keys");
 
 cloudinary.config({
@@ -12,6 +13,8 @@ cloudinary.config({
   api_secret: CLOUD_KEY_SECRET,
 });
 
+const client = new Client({});
+
 router.post("/createpost", requireLogin, (req, res) => {
   // const date = new Date().toLocaleDateString("en", {
   //   year: "numeric",
@@ -19,32 +22,66 @@ router.post("/createpost", requireLogin, (req, res) => {
   //   day: "numeric",
   // });
   const { resName, resLocation, resDetails, resImgsDetail } = req.body;
-  if (!resName || !resLocation || !resDetails) {
+  if (!resName || !resLocation || !resDetails || !resImgsDetail) {
     return res.status(422).json({ error: "Please add all the fields" });
   }
   req.user.password = undefined;
-  // console.log(resImgsDetail);
-  const post = new Post({
-    resName,
-    resLocation,
-    resDetails,
-    resImgsDetail,
-    postedBy: req.user,
-  });
-  post
-    .save()
-    .then((result) => {
-      res.json({ post: result });
+  client
+    .geocode({
+      params: {
+        address: resLocation,
+        key: "AIzaSyDIepUcuQ8sApkWzlj2F077OU_PwZFSyhY",
+      },
     })
-    .catch((err) => {
-      console.log(err);
+    .then((r) => {
+      // console.log("33");
+      const district = r.data.results[0].address_components.reverse();
+      console.log(r.data.results[0]);
+      const post = new Post({
+        resName,
+        resLocation: district[4].long_name,
+        resFullAddress: r.data.results[0].formatted_address,
+        resDetails,
+        resImgsDetail,
+        resLocationLatLng: r.data.results[0].geometry.location,
+        postedBy: req.user,
+      });
+      post
+        .save()
+        .then((result) => {
+          res.json({ post: result });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((e) => {
+      console.log(e.response.data.error_message);
     });
+
+  // console.log(resImgsDetail);
+  // const post = new Post({
+  //   resName,
+  //   resLocation,
+  //   resDetails,
+  //   resImgsDetail,
+  //   resLocationLatLng,
+  //   postedBy: req.user,
+  // });
+  // post
+  //   .save()
+  //   .then((result) => {
+  //     res.json({ post: result });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
 });
 
 router.get("/allpost", requireLogin, (req, res) => {
   Post.find()
     .populate("postedBy", "_id name")
-    .populate("comments.postedBy", "_id name")
+    // .populate("comments.postedBy", "_id name")
     .sort("-createdAt")
     .then((posts) => {
       res.json({ posts });
@@ -86,7 +123,6 @@ router.put("/updatepost", requireLogin, (req, res) => {
     req.body.postId,
     {
       resName: req.body.resName,
-      resLocation: req.body.resLocation,
       resDetails: req.body.resDetails,
     },
     {
@@ -212,4 +248,18 @@ router.delete("/deletepost/:postId", requireLogin, (req, res) => {
     });
 });
 
+router.post("/searchres", requireLogin, (req, res) => {
+  let resPattern = new RegExp(req.body.searchText); ///^bar$/i
+  const data = {};
+  console.log(data);
+  data[req.body.searchParam] = { $regex: resPattern, $options: "i" };
+  Post.find(data)
+    .populate("postedBy", "_id name")
+    .then((post) => {
+      res.json({ post });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 module.exports = router;

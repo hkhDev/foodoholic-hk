@@ -3,14 +3,14 @@ import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
 
 const UpdateModal = (props) => {
   const [editResName, setEditResName] = useState(props.post.resName);
-  const [editResLocation, setEditResLocation] = useState(
-    props.post.resLocation
-  );
+  // const [editResLocation, setEditResLocation] = useState(
+  //   props.post.resLocation
+  // );
   const [editResDetails, setEditResDetails] = useState(props.post.resDetails);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    props.update(editResName, editResLocation, editResDetails, props.post._id);
+    props.update(editResName, editResDetails, props.post._id);
     props.handleEditModalClose();
     // setEditResDetails(props.post.resDetails);
   };
@@ -43,7 +43,7 @@ const UpdateModal = (props) => {
             </FloatingLabel>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicLocation">
+          {/* <Form.Group className="mb-3" controlId="formBasicLocation">
             <FloatingLabel
               controlId="floatingInput"
               label="Restaurant Location"
@@ -58,7 +58,7 @@ const UpdateModal = (props) => {
                 }}
               />
             </FloatingLabel>
-          </Form.Group>
+          </Form.Group> */}
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <FloatingLabel

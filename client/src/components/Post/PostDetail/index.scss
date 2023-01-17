@@ -1,24 +1,21 @@
 .post-detail {
   .res-name {
     text-align: left;
+    .res-created-at {
+      font-size: 0.75rem !important;
+    }
   }
-  .res-location {
-    text-align: left;
-  }
-  .res-detail {
-    text-align: left;
-  }
+  .res-location,
+  .res-detail,
   .res-comment {
     text-align: left;
-  }
-  .res-comment-delete {
-    text-align: right;
   }
   .posted-by {
     text-align: left;
     font-weight: bold;
   }
-  .posted-by-icon {
+  .posted-by-icon,
+  .res-comment-delete {
     text-align: right;
   }
 }

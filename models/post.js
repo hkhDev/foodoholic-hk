@@ -11,6 +11,14 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    resFullAddress: {
+      type: String,
+      required: true,
+    },
+    resLocationLatLng: {
+      type: Object,
+      required: true,
+    },
     resDetails: {
       type: String,
       required: true,

@@ -29,6 +29,12 @@ const Post = (props) => {
     }
   );
 
+  // console.log(geocodeByLatLng({ lat: 49.2280829, lng: -122.9975599 }));
+
+  //   geocodeByLatLng({ lat: 49.2280829, lng: -122.9975599 }).then((results) =>
+  //     console.log(results)
+  //   );
+
   const likePost = (id) => {
     axios
       .put(
@@ -82,7 +88,11 @@ const Post = (props) => {
   return (
     <Card style={{ width: "18rem" }}>
       <LinkContainer to={`/post/${props.post._id}`}>
-        <Card.Img variant="top" src={props.post.resImgsDetail[0].imgUrl} />
+        <Card.Img
+          variant="top"
+          src={props.post.resImgsDetail[0].imgUrl}
+          className="hand-cursor"
+        />
       </LinkContainer>
       <Card.Body>
         <Card.Title>{props.post.resName}</Card.Title>
@@ -92,7 +102,7 @@ const Post = (props) => {
         <Container>
           <Row>
             <Col></Col>
-            <Col>
+            <Col className="hand-cursor">
               <FontAwesomeIcon
                 icon={
                   likeStatus ? faHandMiddleFingerSolid : faHandMiddleFingerReg
@@ -108,7 +118,7 @@ const Post = (props) => {
               <> </>
               {likes}
             </Col>
-            <Col>
+            <Col className="hand-cursor">
               <LinkContainer to={`/post/${props.post._id}`}>
                 <FontAwesomeIcon icon={faComment} />
               </LinkContainer>{" "}
@@ -128,7 +138,9 @@ const Post = (props) => {
           }
         >
           <span>
-            by <strong>{props.post.postedBy.name}</strong> / {postCreatedAt}
+            by{" "}
+            <strong className="hand-cursor">{props.post.postedBy.name}</strong>{" "}
+            / {postCreatedAt}
           </span>
         </LinkContainer>
       </Card.Footer>

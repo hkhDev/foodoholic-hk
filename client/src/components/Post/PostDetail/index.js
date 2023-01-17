@@ -32,6 +32,7 @@ import {
 import axios from "axios";
 import DelModal from "./DelModal";
 import UpdateModal from "./UpdateModal";
+import MapModal from "./MapModal";
 import "./index.scss";
 import { loadingEffect } from "../../Home";
 import ImgCarousels from "./ImgCarousels";
@@ -46,6 +47,7 @@ const PostDetail = () => {
   const [allComments, setAllComments] = useState("");
   const [delCommentModalShow, setDelCommentModalShow] = useState(false);
   const [editPostModalShow, setEditPostModalShow] = useState(false);
+  const [mapModalShow, setMapModalShow] = useState(false);
   const [delPostModalShow, setDelPostModalShow] = useState(false);
   const { postId } = useParams();
 
@@ -54,6 +56,11 @@ const PostDetail = () => {
 
   const handleDelPostModalClose = () => setDelPostModalShow(false);
   const handleDelPostModalShow = () => setDelPostModalShow(true);
+
+  const handleMapModalClose = () => setMapModalShow(false);
+  const handleMapModalShow = () => {
+    setMapModalShow(true);
+  };
 
   const handleDelCommentModalClose = () => setDelCommentModalShow(false);
   const handleDelCommentModalShow = () => setDelCommentModalShow(true);
@@ -87,16 +94,13 @@ const PostDetail = () => {
       });
   };
 
-  const updatePost = (resName, resLocation, resDetails, id) => {
+  const updatePost = (resName, resDetails, id) => {
     setIsLoading(true);
-    console.log("calling update com api");
-    console.log(id);
     axios
       .put(
         "/updatepost",
         {
           resName,
-          resLocation,
           resDetails,
           postId: id,
         },
@@ -108,8 +112,6 @@ const PostDetail = () => {
         }
       )
       .then((res) => {
-        console.log("Post Updated");
-        console.log(res.data);
         setPost(res.data);
         setIsLoading(false);
       })
@@ -227,7 +229,7 @@ const PostDetail = () => {
                                     <FontAwesomeIcon
                                       icon={faTrash}
                                       onClick={handleDelPostModalShow}
-                                      className="delete-icon"
+                                      className="delete-icon hand-cursor"
                                     />
                                   </Col>
                                 </Row>
@@ -237,7 +239,7 @@ const PostDetail = () => {
                                     <FontAwesomeIcon
                                       icon={faPen}
                                       onClick={handleEditPostModalShow}
-                                      className="edit-icon"
+                                      className="edit-icon hand-cursor"
                                     />
                                   </Col>
                                 </Row>
@@ -245,7 +247,10 @@ const PostDetail = () => {
                             </Popover>
                           }
                         >
-                          <FontAwesomeIcon icon={faCaretDown} />
+                          <FontAwesomeIcon
+                            icon={faCaretDown}
+                            className="hand-cursor"
+                          />
                         </OverlayTrigger>
                       </Col>
                     )}
@@ -276,12 +281,23 @@ const PostDetail = () => {
                   <Card.Img variant="top" src={post.resImgsDetail[0].imgUrl} />
                 )}
                 <Card.Body>
-                  <Card.Title className="res-name">{post.resName}</Card.Title>
-                  <Card.Text className="res-location">
-                    <FontAwesomeIcon icon={faLocationDot} /> {post.resLocation}
-                    <> / </>
-                    {postCreatedAt}
+                  <Card.Title className="res-name">
+                    {post.resName} /
+                    <span className="res-created-at"> {postCreatedAt}</span>
+                  </Card.Title>
+                  <Card.Text
+                    className="res-location hand-cursor"
+                    onClick={handleMapModalShow}
+                  >
+                    <FontAwesomeIcon icon={faLocationDot} />{" "}
+                    {post.resFullAddress}
                   </Card.Text>
+                  <MapModal
+                    modalTitle="Address"
+                    post={post}
+                    mapModalShow={mapModalShow}
+                    handleMapModalClose={handleMapModalClose}
+                  />
                   <Row>
                     <Card.Text className="res-detail">
                       <LinkContainer
@@ -353,7 +369,11 @@ const PostDetail = () => {
                           }}
                         />
 
-                        <Button variant="outline-secondary" type="submit">
+                        <Button
+                          variant="outline-secondary"
+                          type="submit"
+                          disabled={comment === "" ? true : false}
+                        >
                           Submit
                         </Button>
                       </InputGroup>

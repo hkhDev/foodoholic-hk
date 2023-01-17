@@ -34,4 +34,17 @@ router.get("/myposts", requireLogin, (req, res) => {
     });
 });
 
+router.post("/searchuser", requireLogin, (req, res) => {
+  console.log(req.body);
+  let userPattern = new RegExp(req.body.searchText);
+  User.find({ name: { $regex: userPattern, $options: "i" } })
+    .select("-password")
+    .then((user) => {
+      res.json({ user });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = router;

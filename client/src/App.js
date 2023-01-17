@@ -10,6 +10,7 @@ import Signup from "./components/Signup";
 import CreatePost from "./components/CreatePost";
 import UserProfile from "./components/UserProfile";
 import PostDetail from "./components/Post/PostDetail";
+import Search from "./components/Search";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { reducer, initialState } from "./reducers/UserReducer";
 
@@ -38,6 +39,7 @@ const Routing = () => {
       <Route path="/CreatePost" element={<CreatePost />} />
       <Route path="/Profile/:userId" element={<UserProfile />} />
       <Route path="/Post/:postId" element={<PostDetail />} />
+      <Route path="/Search" element={<Search />} />
     </Routes>
   );
 };

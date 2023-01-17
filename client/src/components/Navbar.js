@@ -1,24 +1,29 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Container, Nav, Navbar } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../App";
 
 const NavBar = () => {
-  const navigate = useNavigate();
   const { state, dispatch } = useContext(UserContext);
   const renderList = () => {
     if (state) {
       return [
-        <LinkContainer key={1} to="/Profile">
+        <LinkContainer key={1} to="/Search">
+          <Nav.Link>
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </Nav.Link>
+        </LinkContainer>,
+        <LinkContainer key={2} to="/Profile">
           <Nav.Link>Profile</Nav.Link>
         </LinkContainer>,
-        <LinkContainer key={2} to="/Createpost">
+        <LinkContainer key={3} to="/Createpost">
           <Nav.Link>Create Post</Nav.Link>
         </LinkContainer>,
-        <LinkContainer key={3} to="/signin">
+
+        <LinkContainer key={4} to="/signin">
           <Nav.Link
-            key={3}
             onClick={() => {
               localStorage.clear();
               dispatch({ type: "CLEAR" });
