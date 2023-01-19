@@ -39,7 +39,7 @@ const CreatePost = () => {
   const [libraries] = useState(["places"]);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDIepUcuQ8sApkWzlj2F077OU_PwZFSyhY",
+    googleMapsApiKey: process.env.REACT_APP_Google_Maps_Api_Key,
     libraries,
   });
 
@@ -48,7 +48,7 @@ const CreatePost = () => {
   const handleSubmit = (event) => {
     // console.log(resLocation.current.value);
     // event.preventDefault();
-    console.log(typeof resLocation.current.value);
+
     const form = event.currentTarget;
     resImgs.length < 1 ? setValidatedImg(false) : setValidatedImg(true);
     if (form.checkValidity() === false) {
@@ -160,6 +160,7 @@ const CreatePost = () => {
       })
       .catch((error) => {
         console.log(error.response.data);
+        setIsLoading(false);
       });
   };
 

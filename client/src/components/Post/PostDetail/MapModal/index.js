@@ -8,7 +8,7 @@ const MapModal = (props) => {
   const [resFullAdress, setResFullAdress] = useState("");
   const [libraries] = useState(["places"]);
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDIepUcuQ8sApkWzlj2F077OU_PwZFSyhY",
+    googleMapsApiKey: process.env.REACT_APP_Google_Maps_Api_Key,
     libraries,
   });
 
