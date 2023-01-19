@@ -103,7 +103,7 @@ router.get("/myposts", requireLogin, (req, res) => {
     });
 });
 
-router.get("/post/id/:postId", (req, res) => {
+router.get("/post/id/:postId", requireLogin, (req, res) => {
   // console.log(req.body);
   Post.findOne({ _id: req.params.postId })
     .populate("postedBy", "_id name")
