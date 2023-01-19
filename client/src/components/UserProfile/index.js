@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Post from "../Post";
 import { loadingEffect } from "../Home";
+import "./index.scss";
 
 const UserProfile = () => {
   const [userPosts, setUserPosts] = useState([]);
@@ -45,8 +46,8 @@ const UserProfile = () => {
     }
   };
   return (
-    <div>
-      <h1>{userPosts.user && userPosts.user.name}</h1>
+    <div className="user-profile">
+      <h1>{userPosts.user && `${userPosts.user.name}'s Posts`}</h1>
       {isLoading ? loadingEffect() : renderPost()}
     </div>
   );
