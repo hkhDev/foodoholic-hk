@@ -74,7 +74,7 @@ const PostDetail = () => {
   const getPost = () => {
     setIsLoading(true);
     axios
-      .get(`/post/${postId}`, {
+      .get(`/post/id/${postId}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("jwt")}`,
           "Content-Type": "application/json",
