@@ -218,7 +218,9 @@ const PostDetail = () => {
                             : "/Profile/" + post.postedBy._id
                         }
                       >
-                        <span>{post.postedBy.name} </span>
+                        <span className="hand-cursor">
+                          {post.postedBy.name}{" "}
+                        </span>
                       </LinkContainer>
                     </Col>
                     {post.postedBy._id === state._id && (
@@ -314,7 +316,9 @@ const PostDetail = () => {
                             : "/Profile/" + post.postedBy._id
                         }
                       >
-                        <strong>{post.postedBy.name} </strong>
+                        <strong className="hand-cursor">
+                          {post.postedBy.name}{" "}
+                        </strong>
                       </LinkContainer>
                       {post.resDetails}
                     </Card.Text>
@@ -332,7 +336,9 @@ const PostDetail = () => {
                                     : "/Profile/" + comment.postedBy._id
                                 }
                               >
-                                <strong>{comment.postedBy.name} </strong>
+                                <strong className="hand-cursor">
+                                  {comment.postedBy.name}{" "}
+                                </strong>
                               </LinkContainer>
                               {comment.text}
                             </Card.Text>
@@ -342,6 +348,7 @@ const PostDetail = () => {
                               <FontAwesomeIcon
                                 icon={faTrash}
                                 onClick={handleDelCommentModalShow}
+                                className="hand-cursor"
                               />
                             )}
                           </Col>

@@ -8,11 +8,14 @@ import {
   Form,
   Button,
   Spinner,
+  Row,
+  Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { LinkContainer } from "react-router-bootstrap";
 import Post from "../Post";
+import "./index.scss";
 
 const Search = () => {
   const [searchParam, setSearchParam] = useState("");
@@ -88,15 +91,15 @@ const Search = () => {
     switch (searchParam) {
       case "user":
         setSearchValue("User");
-        console.log("User");
+        // console.log("User");
         break;
       case "resName":
         setSearchValue("Restaurant Name");
-        console.log("Name");
+        // console.log("Name");
         break;
       case "resLocation":
         setSearchValue("Restaurant Location");
-        console.log("Location");
+        // console.log("Location");
         break;
     }
   }, [searchParam]);
@@ -167,21 +170,21 @@ const Search = () => {
           resultUser.map((user, index) => {
             return (
               <LinkContainer key={index} to={"/Profile/" + user._id}>
-                <h1>
+                <h3 className="search-result hand-cursor">
                   <FontAwesomeIcon icon={faUser} /> {user.name}
-                </h1>
+                </h3>
               </LinkContainer>
             );
           })
         ) : (
-          <>No user found</>
+          <h3 className="search-result">No user found</h3>
         ))}
       {resultPost &&
         searchStatus &&
         (resultPost.length > 0 ? (
           resultPost.map((post) => <Post key={post._id} post={post} />)
         ) : (
-          <>No restaurant found</>
+          <h3 className="search-result">No restaurant found</h3>
         ))}
     </Container>
   );

@@ -8,7 +8,7 @@
 
 .card {
   margin: 3rem auto;
-  width: 75%;
+  width: 50%;
   text-align: center;
   .title {
     margin: 2rem 0;
@@ -18,4 +18,10 @@
 
 .hand-cursor:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 992px) {
+  .card {
+    width: 100%;
+  }
 }
