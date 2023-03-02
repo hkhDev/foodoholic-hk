@@ -13,7 +13,6 @@ import {
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import "./index.scss";
 
 const Signin = () => {
   const { state, dispatch } = useContext(UserContext);
@@ -94,7 +93,7 @@ const Signin = () => {
                   }}
                 />
               </FloatingLabel>
-              <InputGroup.Text>
+              <InputGroup.Text className="hand-cursor">
                 <FontAwesomeIcon
                   icon={passwordHidden ? faEye : faEyeSlash}
                   onClick={() => setPasswordHidden(!passwordHidden)}
@@ -108,7 +107,7 @@ const Signin = () => {
             <br />
             <Form.Group>
               <LinkContainer to="/Signup">
-                <Form.Text id="passwordHelpBlock">
+                <Form.Text id="passwordHelpBlock" className="hand-cursor">
                   Don't have an account yet?
                 </Form.Text>
               </LinkContainer>

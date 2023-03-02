@@ -22,13 +22,8 @@ import {
   faTrash,
   faPen,
   faCaretDown,
-  faHandMiddleFinger as faHandMiddleFingerSolid,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faComment,
-  faHandPointUp as faHandMiddleFingerReg,
-} from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import DelModal from "./DelModal";
 import UpdateModal from "./UpdateModal";

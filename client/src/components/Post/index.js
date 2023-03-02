@@ -5,11 +5,13 @@ import { Card, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
-  faHandMiddleFinger as faHandMiddleFingerSolid,
+  faThumbsUp as faThumbsUpSolid,
+  faHeart as faHeartSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faComment,
-  faHandPointUp as faHandMiddleFingerReg,
+  faThumbsUp as faThumbsUpReg,
+  faHeart as faHeartReg,
 } from "@fortawesome/free-regular-svg-icons";
 import { UserContext } from "../../App";
 
@@ -112,11 +114,7 @@ const Post = (props) => {
                 }
               }}
             >
-              <FontAwesomeIcon
-                icon={
-                  likeStatus ? faHandMiddleFingerSolid : faHandMiddleFingerReg
-                }
-              />
+              <FontAwesomeIcon icon={likeStatus ? faHeartSolid : faHeartReg} />
               <> </>
               {likes}
             </Col>

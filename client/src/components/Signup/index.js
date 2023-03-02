@@ -115,7 +115,7 @@ const Signup = () => {
                   }}
                 />
               </FloatingLabel>
-              <InputGroup.Text>
+              <InputGroup.Text className="hand-cursor">
                 <FontAwesomeIcon
                   icon={passwordHidden ? faEye : faEyeSlash}
                   onClick={() => setPasswordHidden(!passwordHidden)}
@@ -129,7 +129,7 @@ const Signup = () => {
             <br />
             <Form.Group>
               <LinkContainer to="/Signin">
-                <Form.Text id="passwordHelpBlock">
+                <Form.Text id="passwordHelpBlock" className="hand-cursor">
                   Already have an account?
                 </Form.Text>
               </LinkContainer>
