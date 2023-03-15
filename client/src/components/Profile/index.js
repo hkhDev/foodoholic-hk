@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
-import { LinkContainer } from "react-router-bootstrap";
+import Button from "react-bootstrap/Button";
 import axios from "axios";
 import Post from "../Post";
 import { loadingEffect } from "../Home";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [myposts, setMyPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { state, dispatch } = useContext(UserContext);
@@ -38,9 +40,10 @@ const Profile = () => {
       ));
     } else {
       return (
-        <LinkContainer to="/createpost">
+        <div className="align-center">
           <h2>Create your first post</h2>
-        </LinkContainer>
+          <Button onClick={() => navigate("/createpost")}>Create</Button>
+        </div>
       );
     }
   };
