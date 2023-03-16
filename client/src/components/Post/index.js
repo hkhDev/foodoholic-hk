@@ -1,16 +1,19 @@
 import axios from "axios";
 import React, { useState, useContext } from "react";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { LinkContainer } from "react-router-bootstrap";
-import { Card, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot,
-  faThumbsUp as faThumbsUpSolid,
+  // faThumbsUp as faThumbsUpSolid,
   faHeart as faHeartSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faComment,
-  faThumbsUp as faThumbsUpReg,
+  // faThumbsUp as faThumbsUpReg,
   faHeart as faHeartReg,
 } from "@fortawesome/free-regular-svg-icons";
 import { UserContext } from "../../App";

@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, FloatingLabel } from "react-bootstrap";
+import React, { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 const UpdateModal = (props) => {
   const [editResName, setEditResName] = useState(props.post.resName);

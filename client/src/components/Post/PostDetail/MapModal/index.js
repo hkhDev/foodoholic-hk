@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
+import React, { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import { useJsApiLoader, GoogleMap, MarkerF } from "@react-google-maps/api";
 import "./index.scss";
 // import { loadingEffect } from "../../../Home";
 
 const MapModal = (props) => {
-  const [resFullAdress, setResFullAdress] = useState("");
   const [libraries] = useState(["places"]);
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_Google_Maps_Api_Key,

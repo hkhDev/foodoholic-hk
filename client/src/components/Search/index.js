@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import axios from "axios";
-import {
-  Container,
-  InputGroup,
-  DropdownButton,
-  Dropdown,
-  Form,
-  Button,
-  Spinner,
-  Row,
-  Col,
-  Card,
-} from "react-bootstrap";
+import Container from "react-bootstrap/Container";
+import InputGroup from "react-bootstrap/InputGroup";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Post from "../Post";
 import "./index.scss";
 
