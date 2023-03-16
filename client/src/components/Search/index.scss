@@ -1,3 +1,13 @@
-.search-result {
-  margin-top: 2rem;
+.search-body {
+  .search-card {
+    padding: 1rem;
+    border: dashed black;
+  }
+  .search-result {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  .search-card-link {
+    color: black;
+  }
 }

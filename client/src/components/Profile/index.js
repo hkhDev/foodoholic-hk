@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../App";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 import axios from "axios";
 import Post from "../Post";
 import { loadingEffect } from "../Home";
+import "./index.scss";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -14,6 +19,7 @@ const Profile = () => {
   useEffect(() => {
     getMyPost();
   }, []);
+  console.log(myposts);
 
   const getMyPost = () => {
     axios
@@ -35,25 +41,57 @@ const Profile = () => {
   };
   const renderPost = () => {
     if (myposts.length > 0) {
-      return myposts.map((post, index) => (
-        <Post key={index} post={post} getPost={getMyPost} />
-      ));
+      return (
+        <Row>
+          {myposts.map((post, index) => (
+            <Col xl="4" lg="6">
+              <Post key={index} post={post} getPost={getMyPost} />
+            </Col>
+          ))}
+        </Row>
+      );
     } else {
       return (
         <div className="align-center">
-          <h2>Create your first post</h2>
-          <Button onClick={() => navigate("/createpost")}>Create</Button>
+          <h2 className="profile-title">Create your first post</h2>
+          <Button
+            variant="outline-primary"
+            onClick={() => navigate("/createpost")}
+          >
+            Create
+          </Button>
         </div>
       );
     }
   };
+
   return (
-    <div>
-      {isLoading ? loadingEffect() : renderPost()}
-      {/* {isLoading ? loadingEffect() :  
-    <h1>{state && state.name}</h1>
-    renderPost() */}
-    </div>
+    <Container className="profile-body">
+      {isLoading ? (
+        loadingEffect()
+      ) : (
+        <>
+          <Row className="profile-info">
+            <Col xs="6" className="profile-info-left align-center">
+              <Image
+                roundedCircle
+                fluid
+                src="images/man.png"
+                className="profile-img"
+              />
+            </Col>
+            <Col xs="6" className="profile-info-right ">
+              <h1>{state && state.name}</h1>
+              <p>
+                <strong>{myposts.length}</strong> posts
+              </p>
+            </Col>
+          </Row>
+          <hr />
+          {renderPost()}
+        </>
+      )}
+    </Container>
   );
 };
 

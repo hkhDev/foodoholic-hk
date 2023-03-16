@@ -1,18 +1,18 @@
-.user-profile {
+.profile-body {
   padding: 2rem 5% 0;
-  .user-profile-info {
+  .profile-info {
     margin-bottom: 2rem;
-    .user-profile-info-right {
+    .profile-info-right {
       margin: auto;
     }
   }
-  .user-profile-title {
+  .profile-title {
     margin: 4rem 0 1rem;
   }
 }
 
 @media only screen and (max-width: 992px) {
-  .user-profile-info-right {
+  .profile-info-right {
     text-align: center;
   }
 }
