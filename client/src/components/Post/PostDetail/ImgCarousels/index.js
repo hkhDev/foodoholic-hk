@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Carousel } from "react-bootstrap";
+import Carousel from "react-bootstrap/Carousel";
 
 const ImgCarousels = (props) => {
   const [index, setIndex] = useState(0);

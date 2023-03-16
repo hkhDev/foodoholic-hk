@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../../../App";
 import { useNavigate } from "react-router-dom";
-import {
-  Card,
-  Form,
-  InputGroup,
-  Button,
-  Popover,
-  OverlayTrigger,
-  Container,
-  Row,
-  Col,
-  Image,
-} from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
+import Button from "react-bootstrap/Button";
+import Popover from "react-bootstrap/Popover";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { LinkContainer } from "react-router-bootstrap";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

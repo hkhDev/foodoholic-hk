@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
+import Spinner from "react-bootstrap/Spinner";
 import Post from "../Post";
 import axios from "axios";
 
