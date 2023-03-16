@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 import axios from "axios";
 import {
   Container,
@@ -10,10 +12,11 @@ import {
   Spinner,
   Row,
   Col,
+  Card,
 } from "react-bootstrap";
+import Image from "react-bootstrap/Image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { LinkContainer } from "react-router-bootstrap";
+import { faUser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Post from "../Post";
 import "./index.scss";
 
@@ -97,15 +100,15 @@ const Search = () => {
         setSearchValue("Restaurant Name");
         // console.log("Name");
         break;
-      case "resLocation":
-        setSearchValue("Restaurant Location");
-        // console.log("Location");
-        break;
+      // case "resLocation":
+      //   setSearchValue("Restaurant Location");
+      //   // console.log("Location");
+      //   break;
     }
   }, [searchParam]);
 
   return (
-    <Container>
+    <Container className="search-body">
       <Form onSubmit={handleSubmit}>
         <Form.Label>Search by</Form.Label>
         <InputGroup className="mb-3">
@@ -167,15 +170,43 @@ const Search = () => {
       {resultUser &&
         searchStatus &&
         (resultUser.length > 0 ? (
-          resultUser.map((user, index) => {
-            return (
-              <LinkContainer key={index} to={"/Profile/" + user._id}>
-                <h3 className="search-result hand-cursor">
-                  <FontAwesomeIcon icon={faUser} /> {user.name}
-                </h3>
-              </LinkContainer>
-            );
-          })
+          <Row>
+            {resultUser.map((user, index) => {
+              return (
+                <LinkContainer
+                  to={"/Profile/" + user._id}
+                  className="hand-cursor"
+                >
+                  <Col
+                    key={index}
+                    xl="3"
+                    lg="4"
+                    md="6"
+                    className="align-center
+              "
+                  >
+                    <>
+                      <Image
+                        roundedCircle
+                        fluid
+                        src="images/man.png"
+                        className="search-result"
+                      />
+                      <h3>{user.name}</h3>
+                    </>
+                    {/* <Link
+                    to={"/Profile/" + user._id}
+                    className="search-card-link"
+                  >
+                    <>
+                      Visit <FontAwesomeIcon icon={faArrowRight} />
+                    </>
+                  </Link> */}
+                  </Col>
+                </LinkContainer>
+              );
+            })}
+          </Row>
         ) : (
           <h3 className="search-result">No user found</h3>
         ))}
