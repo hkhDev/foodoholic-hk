@@ -38,8 +38,7 @@ const UserProfile = () => {
       });
   };
   const renderPost = () => {
-    // console.log(Array.isArray(userPosts.posts));
-    console.log(userPosts);
+    // console.log(userPosts);
     if (userPosts.posts && userPosts.posts.length > 0) {
       return (
         <Row>
@@ -68,7 +67,7 @@ const UserProfile = () => {
               <Image
                 roundedCircle
                 fluid
-                src="../images/man.png"
+                src={`../images/${userPosts.user.icon}.png`}
                 className="profile-img"
               />
             </Col>

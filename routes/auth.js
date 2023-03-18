@@ -13,12 +13,12 @@ const requireLogin = require("../middleware/requireLogin");
 // });
 
 router.post("/signup", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, icon } = req.body;
   if (!email || !password || !name) {
-    console.log("Please add all the fields");
+    // console.log("Please add all the fields");
     return res.status(422).send({ error: "Please add all the fields" });
   }
-  console.log(req.body);
+  // console.log(req.body);
   await User.findOne({ email: email })
     .then((savedUser) => {
       if (savedUser) {
@@ -29,6 +29,7 @@ router.post("/signup", async (req, res) => {
           name,
           email,
           password: hashedpassword,
+          icon,
         });
 
         user
@@ -54,15 +55,15 @@ router.post("/signin", (req, res) => {
     if (!savedUser) {
       return res.status(422).json({ error: "Invalid email or password" });
     }
-    console.log(savedUser._id);
+    // console.log(savedUser);
     bcrypt
       .compare(password, savedUser.password)
       .then((passwordMatch) => {
         if (passwordMatch) {
           // res.json({ message: "Login successfully" });
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-          const { _id, email, name } = savedUser;
-          res.json({ token, user: { _id, email, name } });
+          const { _id, email, name, icon } = savedUser;
+          res.json({ token, user: { _id, email, name, icon } });
         } else {
           return res.status(422).json({ error: "Invalid email or password" });
         }

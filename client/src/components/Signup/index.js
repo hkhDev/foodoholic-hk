@@ -7,23 +7,36 @@ import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Modal from "react-bootstrap/Modal";
 import InputGroup from "react-bootstrap/InputGroup";
+import Image from "react-bootstrap/Image";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import { LinkContainer } from "react-router-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import "./index.scss";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [icon, setIcon] = useState("");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [modalShow, setModalShow] = useState(false);
+  const [iconModalShow, setIconModalShow] = useState(false);
+  const [messageModalShow, setMessageModalShow] = useState(false);
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [signUpStatus, setSignUpStatus] = useState(false);
   const [message, setMessage] = useState({});
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const handleClose = () => {
-    setModalShow(false);
+  const handleIconModalClose = () => {
+    setIconModalShow(false);
+  };
+
+  const iconArr = Array.from({ length: 8 }, (_, i) => i + 1);
+
+  const handleMessageModalClose = () => {
+    setMessageModalShow(false);
     signUpStatus && navigate("/signin");
   };
 
@@ -33,13 +46,14 @@ const Signup = () => {
     // email validation
     if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       setMessage({ title: "Warning!", body: "Invalid email" });
-      setModalShow(true);
+      setMessageModalShow(true);
     } else {
       await axios
         .post("/signup", {
           name,
           email,
           password,
+          icon,
           Headers: {
             "Content-Type": "application/json",
           },
@@ -55,7 +69,7 @@ const Signup = () => {
           // console.log(error.response.data);
           setMessage({ title: "Warning!", body: error.response.data.error });
         });
-      setModalShow(true);
+      setMessageModalShow(true);
     }
   };
 
@@ -69,6 +83,77 @@ const Signup = () => {
         <Card.Body>
           <Card.Title className="title">SIGN UP</Card.Title>
           <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              {/* <Form.Control type="hidden" /> */}
+              <Image
+                src={
+                  "images/" +
+                  (icon === "" ? "avatar_unselected" : icon) +
+                  ".png"
+                }
+                onClick={() => setIconModalShow(true)}
+                className="signup-default-icon hand-cursor"
+              />
+              <p>Select your icon</p>
+              <Modal show={iconModalShow} onHide={handleIconModalClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Select Icon</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Container>
+                    <Row>
+                      {iconArr.map((icon, index) => {
+                        const iconName = `icon${icon}`;
+                        return (
+                          <Col xs="3" className="">
+                            <div
+                              className="signup-select-icon"
+                              tabIndex={index}
+                              onClick={() => {
+                                setIcon(iconName);
+                                setIconModalShow(false);
+                              }}
+                            >
+                              <Image
+                                roundedCircle
+                                fluid
+                                src={`/images/${iconName}.png`}
+                              />
+                            </div>
+                          </Col>
+                        );
+                      })}
+                      <div className="align-center signup-icon-attribution">
+                        <a
+                          href="https://iconscout.com/icons/avatar"
+                          target="_blank"
+                          className="signup-icon-attribution-link"
+                        >
+                          Avatar Icon
+                        </a>{" "}
+                        by{" "}
+                        <a
+                          href="https://iconscout.com/contributors/dmitriy-bondarchuk"
+                          target="_blank"
+                          className="signup-icon-attribution-link"
+                        >
+                          Dmitriy Bondarchuk
+                        </a>
+                      </div>
+                    </Row>
+                  </Container>
+                </Modal.Body>
+                {/* <Modal.Footer>
+                  <Button variant="primary">Select</Button>
+                  <Button
+                    variant="outline-danger"
+                    onClick={handleIconModalClose}
+                  >
+                    Close
+                  </Button>
+                </Modal.Footer> */}
+              </Modal>
+            </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <FloatingLabel
                 controlId="floatingEmail"
@@ -134,13 +219,13 @@ const Signup = () => {
             </Form.Group>
           </Form>
         </Card.Body>
-        <Modal show={modalShow} onHide={handleClose}>
+        <Modal show={messageModalShow} onHide={handleMessageModalClose}>
           <Modal.Header closeButton>
             <Modal.Title>{message.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>{message.body}</Modal.Body>
           <Modal.Footer>
-            <Button variant="outline-danger" onClick={handleClose}>
+            <Button variant="outline-danger" onClick={handleMessageModalClose}>
               Close
             </Button>
           </Modal.Footer>

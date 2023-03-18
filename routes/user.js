@@ -10,7 +10,7 @@ router.get("/user/:id", requireLogin, (req, res) => {
     .select("-password")
     .then((user) => {
       Post.find({ postedBy: req.params.id })
-        .populate("postedBy", "_id name")
+        .populate("postedBy", "_id name icon")
         .sort("-createdAt")
         .exec((err, posts) => {
           if (err) {
@@ -25,6 +25,7 @@ router.get("/user/:id", requireLogin, (req, res) => {
 });
 
 router.get("/myposts", requireLogin, (req, res) => {
+  console.log("user");
   Post.find({ postedBy: req.user._id })
     .populate("postedBy", "_id name")
     .then((myposts) => {
