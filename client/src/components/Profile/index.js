@@ -16,10 +16,11 @@ const Profile = () => {
   const [myposts, setMyPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { state, dispatch } = useContext(UserContext);
+
   useEffect(() => {
     getMyPost();
   }, []);
-  console.log(myposts);
+  // console.log(myposts);
 
   const getMyPost = () => {
     axios
@@ -41,11 +42,12 @@ const Profile = () => {
   };
   const renderPost = () => {
     if (myposts.length > 0) {
+      // console.log(myposts);
       return (
         <Row>
           {myposts.map((post, index) => (
-            <Col xl="4" lg="6">
-              <Post key={index} post={post} getPost={getMyPost} />
+            <Col key={index} xl="4" lg="6">
+              <Post post={post} />
             </Col>
           ))}
         </Row>
@@ -76,7 +78,7 @@ const Profile = () => {
               <Image
                 roundedCircle
                 fluid
-                src="images/man.png"
+                src={`images/${state.icon}.png`}
                 className="profile-img"
               />
             </Col>

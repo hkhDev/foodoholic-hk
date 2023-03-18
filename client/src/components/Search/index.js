@@ -42,7 +42,7 @@ const Search = () => {
         }
       )
       .then((res) => {
-        console.log(res.data.user);
+        // console.log(res.data.user);
         setResultPost();
         setResultUser(res.data.user);
         setIsLoading(false);
@@ -70,7 +70,7 @@ const Search = () => {
         }
       )
       .then((res) => {
-        console.log(res.data.post);
+        // console.log(res.data.post);
         setResultUser();
         setResultPost(res.data.post);
         setIsLoading(false);
@@ -139,7 +139,6 @@ const Search = () => {
             value={searchText}
             onChange={(e) => {
               setSearchtext(e.target.value);
-              console.log(e.target.value);
             }}
             disabled={searchValue === "Select" ? true : false}
           />
@@ -168,6 +167,7 @@ const Search = () => {
             {resultUser.map((user, index) => {
               return (
                 <LinkContainer
+                  key={index}
                   to={"/Profile/" + user._id}
                   className="hand-cursor"
                 >
@@ -183,7 +183,7 @@ const Search = () => {
                       <Image
                         roundedCircle
                         fluid
-                        src="images/man.png"
+                        src={`images/${user.icon}.png`}
                         className="search-result"
                       />
                       <h3>{user.name}</h3>

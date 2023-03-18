@@ -91,18 +91,6 @@ router.get("/allpost", requireLogin, (req, res) => {
     });
 });
 
-router.get("/myposts", requireLogin, (req, res) => {
-  Post.find({ postedBy: req.user._id })
-    .populate("postedBy", "_id name")
-    .sort("-createdAt")
-    .then((myposts) => {
-      res.json({ myposts });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
 router.get("/post/id/:postId", requireLogin, (req, res) => {
   // console.log(req.body);
   Post.findOne({ _id: req.params.postId })

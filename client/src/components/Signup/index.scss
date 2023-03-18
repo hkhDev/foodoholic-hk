@@ -1,0 +1,22 @@
+.signup-default-icon {
+  margin-bottom: 0.5rem;
+  width: 25%;
+}
+
+.signup-select-icon {
+  margin: 0.5rem 0;
+}
+
+.signup-select-icon:focus {
+  border: 2px solid black;
+  border-radius: 20%;
+  opacity: 0.5;
+}
+
+.signup-icon-attribution {
+  margin-top: 1rem;
+  font-size: 0.5rem;
+  .signup-icon-attribution-link {
+    color: black;
+  }
+}
