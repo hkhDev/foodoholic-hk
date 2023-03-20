@@ -170,6 +170,7 @@ const Profile = () => {
                     fluid
                     src={`images/${editProfileIcon}.png`}
                     onClick={() => setIconModalShow(true)}
+                    className="hand-cursor"
                   />
                 </div>
                 <SelectIconModal
