@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
@@ -14,6 +14,7 @@ import Col from "react-bootstrap/Col";
 import { LinkContainer } from "react-router-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import SelectIconModal from "./SelectIconModal";
 import "./index.scss";
 
 const Signup = () => {
@@ -32,8 +33,6 @@ const Signup = () => {
   const handleIconModalClose = () => {
     setIconModalShow(false);
   };
-
-  const iconArr = Array.from({ length: 8 }, (_, i) => i + 1);
 
   const handleMessageModalClose = () => {
     setMessageModalShow(false);
@@ -95,64 +94,12 @@ const Signup = () => {
                 className="signup-default-icon hand-cursor"
               />
               <p>Select your icon</p>
-              <Modal show={iconModalShow} onHide={handleIconModalClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Select Icon</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Container>
-                    <Row>
-                      {iconArr.map((icon, index) => {
-                        const iconName = `icon${icon}`;
-                        return (
-                          <Col xs="3" className="">
-                            <div
-                              className="signup-select-icon"
-                              tabIndex={index}
-                              onClick={() => {
-                                setIcon(iconName);
-                                setIconModalShow(false);
-                              }}
-                            >
-                              <Image
-                                roundedCircle
-                                fluid
-                                src={`/images/${iconName}.png`}
-                              />
-                            </div>
-                          </Col>
-                        );
-                      })}
-                      <div className="align-center signup-icon-attribution">
-                        <a
-                          href="https://iconscout.com/icons/avatar"
-                          target="_blank"
-                          className="signup-icon-attribution-link"
-                        >
-                          Avatar Icon
-                        </a>{" "}
-                        by{" "}
-                        <a
-                          href="https://iconscout.com/contributors/dmitriy-bondarchuk"
-                          target="_blank"
-                          className="signup-icon-attribution-link"
-                        >
-                          Dmitriy Bondarchuk
-                        </a>
-                      </div>
-                    </Row>
-                  </Container>
-                </Modal.Body>
-                {/* <Modal.Footer>
-                  <Button variant="primary">Select</Button>
-                  <Button
-                    variant="outline-danger"
-                    onClick={handleIconModalClose}
-                  >
-                    Close
-                  </Button>
-                </Modal.Footer> */}
-              </Modal>
+              <SelectIconModal
+                iconModalShow={iconModalShow}
+                handleIconModalClose={handleIconModalClose}
+                icon={icon}
+                setIcon={setIcon}
+              />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <FloatingLabel

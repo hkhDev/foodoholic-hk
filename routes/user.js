@@ -49,4 +49,28 @@ router.post("/searchuser", requireLogin, (req, res) => {
     });
 });
 
+router.put("/editprofilename", requireLogin, (req, res) => {
+  console.log(req.body);
+  User.findByIdAndUpdate(
+    req.body._id,
+    {
+      name: req.body.name,
+      icon: req.body.icon,
+    },
+    {
+      new: true,
+    }
+  )
+    // .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      } else {
+        const { _id, email, name, icon } = result;
+        res.json({ user: { _id, email, name, icon } });
+        console.log(result);
+      }
+    });
+});
+
 module.exports = router;
