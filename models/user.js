@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: { createdAt: "created_at", updatedAt: "updated_at" } }
 );
 
 mongoose.model("User", userSchema); //if use export, may have error when you want to reuse the schema
