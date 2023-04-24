@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -10,6 +11,7 @@ import {
   faLocationDot,
   // faThumbsUp as faThumbsUpSolid,
   faHeart as faHeartSolid,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faComment,
@@ -17,6 +19,7 @@ import {
   faHeart as faHeartReg,
 } from "@fortawesome/free-regular-svg-icons";
 import { UserContext } from "../../App";
+import "./index.scss";
 
 const Post = (props) => {
   const { state, dispatch } = useContext(UserContext);
@@ -96,14 +99,14 @@ const Post = (props) => {
         <Card.Img
           variant="top"
           src={props.post.resImgsDetail[0].imgUrl}
-          className="hand-cursor"
+          className="hand-cursor post-img"
         />
       </LinkContainer>
       <Card.Body>
         <Card.Title>{props.post.resName}</Card.Title>
-        <Card.Text>
+        {/* <Card.Text>
           <FontAwesomeIcon icon={faLocationDot} /> {props.post.resLocation}
-        </Card.Text>
+        </Card.Text> */}
         <Container>
           <Row>
             <Col></Col>
@@ -129,6 +132,13 @@ const Post = (props) => {
             </Col>
             <Col></Col>
           </Row>
+          <Card.Text>
+            <Link to={`/post/${props.post._id}`} className="post-link">
+              <>
+                Visit <FontAwesomeIcon icon={faArrowRight} />
+              </>
+            </Link>
+          </Card.Text>
         </Container>
       </Card.Body>
 

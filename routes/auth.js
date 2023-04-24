@@ -21,6 +21,7 @@ router.post("/signup", async (req, res) => {
   // console.log(req.body);
   await User.findOne({ email: email })
     .then((savedUser) => {
+      console.log(savedUser);
       if (savedUser) {
         return res.status(422).send({ error: "Email already been used" });
       }
@@ -55,7 +56,7 @@ router.post("/signin", (req, res) => {
     if (!savedUser) {
       return res.status(422).json({ error: "Invalid email or password" });
     }
-    // console.log(savedUser);
+    console.log(savedUser._id);
     bcrypt
       .compare(password, savedUser.password)
       .then((passwordMatch) => {

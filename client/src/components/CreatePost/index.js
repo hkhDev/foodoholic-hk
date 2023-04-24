@@ -238,7 +238,7 @@ const CreatePost = () => {
             <Form.Group className="mb-3" controlId="formResLocation">
               <Autocomplete
                 options={{
-                  componentRestrictions: { country: ["ca"] },
+                  componentRestrictions: { country: ["hk"] },
                   // language: "en",
                 }}
                 onSelect={(e) => console.log(e.target.value)}

@@ -35,11 +35,11 @@ router.post("/createpost", requireLogin, (req, res) => {
     })
     .then((r) => {
       // console.log("33");
-      const district = r.data.results[0].address_components.reverse();
+      const district = r.data.results[0].address_components;
       console.log(r.data.results[0]);
       const post = new Post({
         resName,
-        resLocation: district[4].long_name,
+        resLocation: district[2].long_name,
         resFullAddress: r.data.results[0].formatted_address,
         resDetails,
         resImgsDetail,
