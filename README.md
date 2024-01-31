@@ -1,3 +1,3 @@
-# foodoholic
+# foodoholic-hk
 
-Website: https://harris-foodoholic.herokuapp.com/
+Website: https://harris-foodoholic-hk.herokuapp.com/
